@@ -1,0 +1,67 @@
+.navCont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+  height: 100px;
+  background-color: black;
+}
+
+.navUl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navUl > li {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  padding: 0.5rem 1.5rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+}
+
+.navUl > li:hover {
+  margin-top: 0.5rem;
+  box-shadow: 10px 10px 31px 0px rgba(0, 0, 0, 0.4);
+}
+
+.navUl > li:nth-child(odd):hover {
+  transform: rotate(6deg) scale(1.05);
+}
+
+.navUl > li:nth-child(even):hover {
+  transform: rotate(-6deg) scale(1.05);
+}
+
+@media screen and (max-width: 600px) {
+  .navCont {
+    height: 200px;
+    flex-wrap: wrap;
+  }
+
+  .navUl {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .navCont,
+  .navUl {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 235px) {
+  .navCont {
+    height: 250px;
+  }
+}
