@@ -1,7 +1,6 @@
 const { User } = require("../Models/User.js")
 const { Chat } = require("../Models/Chat.js")
 const { MessageModel } = require("../Models/MessageModel")
-const { createImage } = require("./chatImageService.js")
 const { ChatImage } = require("../Models/ChatImage.js")
 const sharp = require("sharp");
 

@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const { authMiddleware } = require('../Middlewares/authMiddleware')
-const { createChat, userChats, findChat, addMessage, getMessages, deleteMessage } = require('../Services/chatService')
-const { getFullImage } = require('../Services/chatImageService.js')
+const { createChat, userChats, findChat, addMessage, getMessages, deleteMessage, getFullImage} = require('../Services/chatService')
 
 router.post('/', authMiddleware, async (req, res) => {
     let result = await createChat(req.body.senderId, req.body.receiverId)
