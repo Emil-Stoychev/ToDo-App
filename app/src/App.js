@@ -1,9 +1,28 @@
-import './App.css';
+import styles from './App.module.css';
+import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+
+import { io } from 'socket.io-client'
+import { Navigation } from './core/navigation/Navigation';
+import { Footer } from './core/footer/Footer';
 
 function App() {
+
+
+
   return (
-    <div className="App">
-      <h1>ToDo App</h1>
+    <div className={styles.app}>
+      <Navigation />
+
+      <main className={styles.mainContainer}>
+        <Routes>
+
+
+        </Routes>
+      </main>
+
+
+      <Footer />
     </div>
   );
 }
