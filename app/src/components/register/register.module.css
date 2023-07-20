@@ -1,0 +1,132 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 4rem 0;
+  height: 100%;
+  min-height: 100%;
+  position: relative;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.divInputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.divInputs > label {
+  letter-spacing: 2px;
+  border-bottom: solid #45f3ff 2px;
+  width: 70%;
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  font-weight: bolder;
+  font-size: 32px;
+}
+
+.divInputs > input {
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  width: 85%;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 28px;
+}
+
+.divInputs > input:focus {
+  width: 100%;
+  border-radius: 1rem;
+  background-color: black;
+  color: white;
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+  margin-top: 0.2rem;
+}
+
+.btnPrimary {
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  padding: 0.5rem 1.5rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+  font-size: 24px;
+  margin-top: 2rem;
+}
+
+.btnPrimary:hover {
+  transform: rotate(6deg) scale(1.05);
+  margin-top: 2.5rem;
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+}
+
+.pEl {
+  letter-spacing: 1px;
+  transition: all 200ms ease-in-out;
+  font-size: 24px;
+}
+
+.pEl:hover {
+  margin-top: 0.2rem;
+}
+
+@media screen and (max-width: 400px) {
+  .divInputs > label {
+    font-size: 28px;
+  }
+
+  .divInputs > input {
+    font-size: 24px;
+  }
+
+  .btnPrimary {
+    font-size: 20px;
+  }
+
+  .pEl {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 315px) {
+  .divInputs > label {
+    font-size: 22px;
+  }
+
+  .divInputs > input {
+    font-size: 20px;
+  }
+
+  .btnPrimary {
+    font-size: 16px;
+  }
+
+  .pEl {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 250px) {
+  .divInputs > label {
+    font-size: 16px;
+  }
+
+  .divInputs > input {
+    font-size: 14px;
+  }
+
+  .btnPrimary {
+    font-size: 12px;
+  }
+
+  .pEl {
+    font-size: 10px;
+  }
+}
