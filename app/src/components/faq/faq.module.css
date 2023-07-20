@@ -51,6 +51,7 @@
 .text {
   word-wrap: break-word;
   width: 90%;
+  letter-spacing: 1px;
 }
 
 @media screen and (max-width: 500px) {
