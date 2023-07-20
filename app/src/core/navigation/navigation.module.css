@@ -30,7 +30,7 @@
 
 .navUl > li:hover {
   margin-top: 0.5rem;
-  box-shadow: 10px 10px 31px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
 }
 
 .navUl > li:nth-child(odd):hover {
