@@ -1,10 +1,44 @@
 import styles from './faq.module.css'
+import { BoxTemplate } from './box'
 
 const FAQ = () => {
     return (
-        <>
-            <h2>FAQ Page</h2>
-        </>
+        <div className={styles.container}>
+
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+            <BoxTemplate />
+
+        </div>
     )
 }
 

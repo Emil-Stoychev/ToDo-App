@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 90%;
+  min-height: 90%;
+  margin: 5rem auto 0 auto;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  width: 100%;
+  margin: 0 auto;
+  gap: 1rem;
+  background-color: rgb(158, 146, 131);
+  border-radius: 1rem;
+}
+
+.smallBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.btnPrimary {
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  padding: 0.5rem 1rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+  font-size: 24px;
+}
+
+.btnPrimary:hover {
+  margin-right: 0.5rem;
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+}
+
+.text {
+  word-wrap: break-word;
+  width: 90%;
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    width: 90%;
+  }
+
+  .smallBox {
+    flex-direction: column;
+  }
+
+  .btnPrimary {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+}
