@@ -132,8 +132,8 @@
 }
 
 .cont:nth-of-type(even) {
-    flex-direction: row-reverse;
-  }
+  flex-direction: row-reverse;
+}
 
 @media screen and (max-width: 1400px) {
   .cont {
@@ -163,6 +163,10 @@
 @media screen and (max-width: 600px) {
   .cont {
     gap: 5rem;
+    flex-direction: column;
+  }
+
+  .cont:nth-of-type(even) {
     flex-direction: column;
   }
 
