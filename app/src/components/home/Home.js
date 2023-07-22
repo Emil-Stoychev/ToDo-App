@@ -1,9 +1,14 @@
 import styles from './home.module.css'
 
+import Guest from './guest/Guest'
+import User from './user/User'
+
 const Home = () => {
     return (
         <>
-            <h2>Home Page</h2>
+            <Guest />
+
+            {/* <User /> */}
         </>
     )
 }
