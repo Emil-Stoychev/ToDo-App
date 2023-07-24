@@ -12,7 +12,6 @@ import Home from './components/home/Home.js'
 const LazyLoginComponent = lazy(() => import('./components/login/Login.js'))
 const LazyRegisterComponent = lazy(() => import('./components/register/Register.js'))
 const LazyAboutComponent = lazy(() => import('./components/about/About.js'))
-const LazyCreateComponent = lazy(() => import('./components/create/Create.js'))
 const LazyProfileComponent = lazy(() => import('./components/profile/Profile.js'))
 const LazyFAQComponent = lazy(() => import('./components/faq/FAQ.js'))
 
@@ -38,8 +37,6 @@ function App() {
             </>
             :
             <>
-              <Route path='/create' element={<Suspense fallback={<LoadingSpinner />}><LazyCreateComponent /></Suspense>} />
-
               <Route path='/profile' element={<Suspense fallback={<LoadingSpinner />}><LazyProfileComponent /></Suspense>} />
             </>
           }

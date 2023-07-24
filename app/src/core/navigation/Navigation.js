@@ -8,7 +8,6 @@ export const Navigation = () => {
         <nav className={styles.navCont}>
             <ul className={styles.navUl}>
                 <li onClick={() => navigate('/')}>Home</li>
-                {/* <li onClick={() => navigate('/create')}>Create</li> */}
                 {/* <li onClick={() => navigate('/profile')}>Profile</li> */}
             </ul>
 

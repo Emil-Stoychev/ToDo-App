@@ -6,23 +6,51 @@ import Done from './done/Done'
 
 const User = () => {
     return (
-        <div className={styles.container}>
+        <div className={styles.mainCont}>
 
-            <Todo />
+            <select className={styles.selectTasks}>
+                <option>First</option>
+                <option>Second</option>
+                <option>Third</option>
+                <option>Some text here for option</option>
+            </select>
 
-            <hr className={styles.line} />
+            <div className={styles.container}>
+                <Todo />
 
-            <Process />
+                <hr className={styles.line} />
 
-            <hr className={styles.line} />
+                <Process />
 
-            <Done />
+                <hr className={styles.line} />
 
-            <div className={styles.sliders}>
-                <button className={styles.arrowBtn}>&#8810;</button>
-                <button className={styles.arrowBtn}>&#8811;</button>
+                <Done />
+
+                <div className={styles.sliders}>
+                    <button className={styles.arrowBtn}>&#8810;</button>
+                    <button className={styles.arrowBtn}>&#8811;</button>
+                </div>
+
             </div>
 
+            <form className={styles.createNone}>
+                <div className={styles.divInputs}>
+                    <label htmlFor='title'>Title</label>
+                    <textarea id='title' ></textarea>
+                </div>
+
+                <h2>Add to:</h2>
+                <select className={styles.selectTasks}>
+                    <option>First</option>
+                    <option>Second</option>
+                    <option>Third</option>
+                    <option>Some text here for option</option>
+                </select>
+
+                <button>Create</button>
+            </form>
+
+            <button className={styles.primaryBtn}>+</button>
         </div>
     )
 }
