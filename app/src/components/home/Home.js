@@ -6,9 +6,9 @@ import User from './user/User'
 const Home = () => {
     return (
         <>
-            {/* <Guest /> */}
+            <Guest />
 
-            <User />
+            {/* <User /> */}
         </>
     )
 }
