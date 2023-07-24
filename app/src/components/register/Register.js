@@ -3,7 +3,7 @@ import styles from './register.module.css'
 
 const Register = () => {
     const uploadImage = useRef(null)
-    
+
     const onClickHandler = (e) => {
         e.preventDefault()
     }
@@ -28,6 +28,20 @@ const Register = () => {
             <div className={styles.divInputs}>
                 <input type='file' className='none' ref={(e) => uploadImage.current = e} />
                 <button onClick={() => uploadImage.current.click()} className={styles.btnPrimary}>Upload image</button>
+            </div>
+
+            <div className={styles?.['inputBox-uploadImages']}>
+                {/* {values.image !== '' &&
+                    <div key={values.image}>
+                        <img src={values.image} />
+                        <input
+                            className={styles?.["inputBox-UploadImage-Btn"]}
+                            type="button"
+                            value="X"
+                            onClick={(e) => removeImage(e)}
+                        />
+                    </div>
+                } */}
             </div>
 
             <button className={styles.btnPrimary} onClick={(e) => onClickHandler(e)}>Register</button>

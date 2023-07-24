@@ -77,6 +77,44 @@
   margin-top: 0.2rem;
 }
 
+.inputBox-uploadImages {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.inputBox-uploadImages div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputBox-uploadImages > div img {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  object-fit: cover;
+}
+
+.inputBox-UploadImage-Btn {
+  width: 80px;
+  height: 40px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #8f8f8f;
+}
+
+.inputBox-UploadImage-Btn:hover {
+  background-color: #45f3ff;
+}
+
+
 @media screen and (max-width: 400px) {
   .divInputs > label {
     font-size: 28px;
@@ -92,6 +130,10 @@
 
   .pEl {
     font-size: 18px;
+  }
+
+  .inputBox-uploadImages {
+    width: 50%;
   }
 }
 
@@ -110,6 +152,10 @@
 
   .pEl {
     font-size: 14px;
+  }
+
+  .inputBox-uploadImages {
+    width: 100%;
   }
 }
 

@@ -26,11 +26,11 @@ function App() {
       <main className={styles.mainContainer}>
         <Routes>
 
+          <Route path='/' element={<Home />} />
+
           {user == null
             ?
             <>
-              <Route path='/' element={<Home />} />
-
               <Route path='/login' element={<Suspense fallback={<LoadingSpinner />}><LazyLoginComponent /></Suspense>} />
 
               <Route path='/register' element={<Suspense fallback={<LoadingSpinner />}><LazyRegisterComponent /></Suspense>} />

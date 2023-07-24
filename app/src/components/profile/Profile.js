@@ -1,12 +1,16 @@
+import { useRef } from 'react'
 import styles from './profile.module.css'
 
 const Profile = () => {
+    const uploadImage = useRef(null)
+
     return (
         <div className={styles.main}>
 
             <div className={styles.top}>
                 <div className={styles.image}>
-                    <img src='https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg' alt='profileImage' />
+                    <img onClick={() => uploadImage.current.click()} src='https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg' alt='profileImage' />
+                    <input type='file' className='none' ref={(e) => uploadImage.current = e} />
                 </div>
 
                 <div className={styles.name}>
