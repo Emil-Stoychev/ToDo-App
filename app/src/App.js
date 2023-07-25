@@ -16,7 +16,7 @@ const LazyProfileComponent = lazy(() => import('./components/profile/Profile.js'
 const LazyFAQComponent = lazy(() => import('./components/faq/FAQ.js'))
 
 function App() {
-  const [user, setUser] = useState('null')
+  const [user, setUser] = useState(null)
 
 
   return (
