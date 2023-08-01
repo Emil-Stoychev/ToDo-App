@@ -1,64 +1,58 @@
-const emailPattern = '^(?:[A-Za-z]+[0-9]+|[A-Za-z]+|[0-9]+[A-Za-z]+)\\@[A-Za-z]+\\.[A-Za-z]+$'
+const Joi = require("joi");
 
-const emailRegex = new RegExp(emailPattern)
+// REGISTER SCHEMA
 
-const userValidator = (user) => {
-    let { email, username, password, rePassword, location, image } = user
+const registerSchemaTest = Joi.object({
+    email: Joi.string().min(3).max(32).required().email({ tlds: { allow: false } }),
+    password: Joi.string().min(3).max(32).required().messages({
+        'string.min': 'Password must be at least {#limit} characters long',
+        'any.required': 'Password is required',
+    }),
+    rePassword: Joi.string().min(3).max(32).required().valid(Joi.ref('password')).messages({
+        'string.min': 'RePassword must be at least {#limit} characters long',
+        'any.required': 'RePassword is required',
+    }),
+    image: Joi.string().min(3).required(),
+});
 
-    if (email.length < 3 || email.trim() === '') {
-        return { message: 'Email is not valid!' }
+function registerSchema(values) {
+    let validatedData = registerSchemaTest.validate(values)
+
+    if (validatedData?.error?.message != undefined) {
+        return validatedData?.error?.message
+        // return setErrors({ message: validateData?.error?.message, type: "" });
     }
 
-    if (username.length < 3 || username.trim() === '' || username.length > 12) {
-        return { message: 'Username is not valid! (3-12 characters)' }
-    }
-
-    if (password != rePassword) {
-        return { message: "Passwords don't match!" }
-    }
-
-    if (!password || password.length < 3 || password.trim() === '') {
-        return { message: 'Password must be at least 3 characters!' }
-    }
-
-    if (image != '') {
-        if (!image.startsWith('data:image')) {
-            return { message: 'Profile picture should be valid!' }
-        }
-    }
-
-    return { email, username, password, location, image }
+    return undefined
 }
 
-const editUserValidator = (user) => {
-    let { username, password, newPassword, location, image } = user
+// PROFILE EDIT SCHEMA
 
-    if (username.length < 3 || username.trim() === '' || username.length > 12) {
-        return { message: 'Username is not valid! (3-12 characters)' }
+const profileSchemaTest = Joi.object({
+    email: Joi.string().min(3).max(32).required().email({ tlds: { allow: false } }),
+    password: Joi.string().min(3).max(32).required().messages({
+        'string.min': 'Password must be at least {#limit} characters long',
+        'any.required': 'Password is required',
+    }),
+    newPass: Joi.string().min(3).max(32).required().valid(Joi.ref('password')).messages({
+        'string.min': 'NewPass must be at least {#limit} characters long',
+        'any.required': 'NewPass is required',
+    }),
+    image: Joi.string().min(3).required(),
+});
+
+function profileEditSchema(values) {
+    let validatedData = profileSchemaTest.validate(values)
+
+    if (validatedData?.error?.message != undefined) {
+        return validatedData?.error?.message
+        // return setErrors({ message: validateData?.error?.message, type: "" });
     }
 
-    if (newPassword != '') {
-        if (!newPassword || newPassword.length < 3 || newPassword.trim() === '') {
-            return { message: "New password must be at least 3 characters!" }
-        }
-
-        password = newPassword
-    }
-
-    if (!password || password.length < 3 || password.trim() === '') {
-        return { message: 'Password must be at least 3 characters!' }
-    }
-
-    if (image != '') {
-        if (!image.startsWith('data:image')) {
-            return { message: 'Profile picture should be valid!' }
-        }
-    }
-
-    return { username, password, location, image }
+    return undefined
 }
 
 module.exports = {
-    userValidator,
-    editUserValidator
+    registerSchema,
+    profileEditSchema
 }

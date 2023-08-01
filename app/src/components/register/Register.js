@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './register.module.css'
+import * as authService from '../../services/authService'
+import { useNavigate } from 'react-router-dom'
+
 import { addOneImage, removeOneImage } from '../../utils/addRemoveImages'
 import registerSchema from '../../joiValidator/register'
 
@@ -11,6 +14,7 @@ const Register = () => {
         image: ''
     })
     const uploadImage = useRef(null)
+    const navigate = useNavigate()
 
     const onChangeHandler = (e) => {
         setValues(oldState => ({
@@ -23,11 +27,20 @@ const Register = () => {
         e.preventDefault()
 
         let checkData = registerSchema(values)
-        if (!checkData) {
+
+        if (checkData == undefined) {
+            authService.register(values)
+                .then(res => {
+                    if (res.message == 'yes') {
+                        navigate('/login')
+                    } else {
+                        console.log(res);
+                    }
+                })
+
         } else {
             console.log(checkData);
         }
-
     }
 
     return (

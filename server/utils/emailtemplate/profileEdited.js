@@ -11,7 +11,7 @@ function profileEdited() {
                         <h3 style="padding: 2rem 1rem; letter-spacing: 1px; color: white; text-align: center;">If it wasn't you, please contact us by email: gymbuddiesteamservice@gmail.com!</h3>
                     </div>
                     <div>
-                        <p style="padding: 2rem 1rem; letter-spacing: 1px; text-align: center; color: white;">Thanks, GymBuddies Team!</p>
+                        <p style="padding: 2rem 1rem; letter-spacing: 1px; text-align: center; color: white;">Thanks, ToDoApp Team!</p>
                     </div>
                 </div>
             </div>

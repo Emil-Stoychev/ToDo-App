@@ -36,9 +36,9 @@ router.post('/login', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    let registereduser = await authService.register(req.body)
+    let registeredUser = await authService.register(req.body)
 
-    res.json(registereduser)
+    res.json(registeredUser)
 })
 
 router.get('/logout/:token', (req, res) => {

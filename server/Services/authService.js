@@ -4,7 +4,7 @@ const sharp = require("sharp");
 const shortid = require('shortid');
 
 const { User } = require('../Models/User')
-const { userValidator, editUserValidator } = require('../utils/userValidator');
+const { registerSchema, profileEditSchema } = require('../utils/userValidator');
 const { sendEmail } = require('./emailService');
 
 let secret = process.env.secret
@@ -91,23 +91,23 @@ const login = async (data) => {
 
 const register = async (data) => {
     try {
-        let user = userValidator(data)
+        let userCheck = registerSchema(data)
 
-        if (user.message) {
-            return user
+        if (userCheck) {
+            return userCheck
         }
 
         // let isExist = await User.findOne({ email: user.email })
-        let isExist = await User.findOne({ "email": { "$regex": user.email, "$options": "i" } })
+        let isExist = await User.findOne({ "email": { "$regex": data.email, "$options": "i" } })
 
         if (isExist) {
             return { message: "Email already exist!" }
         }
 
-        if (user.image != '') {
-            const buffer = Buffer.from(user?.image.split(";base64,").pop(), "base64");
+        if (data.image != '') {
+            const buffer = Buffer.from(data?.image.split(";base64,").pop(), "base64");
 
-            user.image = await sharp(buffer)
+            data.image = await sharp(buffer)
                 .resize(150, 150, { fit: "inside" })
                 .toBuffer()
                 .then(async (thumbnail) => {
@@ -115,33 +115,27 @@ const register = async (data) => {
                 });
         }
 
-        let hashedPassword = await bcrypt.hash(user.password, 10)
-
-        let newDate = new Date()
-        let date = newDate.toLocaleString()
+        let hashedPassword = await bcrypt.hash(data.password, 10)
 
         let verificationId = shortid.generate()
 
-        let isReadyEmail = await sendEmail('sendCode', user.email, verificationId)
+        let isReadyEmail = await sendEmail('sendCode', data.email, verificationId)
 
         if (isReadyEmail.message == 'An error has occured!') {
             return { message: 'Email is not valid!' }
         }
 
         let createdUser = {
-            email: user.email,
-            username: user.username,
+            email: data.email,
+            username: data.username,
             password: hashedPassword,
             verification: verificationId,
-            image: user.image || '',
-            ownPosts: [],
+            image: data.image || '',
+            tasks: [],
             followers: [],
             following: [],
-            location: user.location || '',
-            savedPosts: [],
-            savedTrainings: [],
+            foreignTask: [],
             chat: [],
-            releasedDate: date
         }
 
         await User.create(createdUser)
@@ -195,7 +189,7 @@ const editProfile = async (data) => {
             return { message: "Wrong password!" }
         }
 
-        let userIsValid = editUserValidator(values)
+        let userIsValid = profileEditSchema(values)
 
         if (userIsValid.message) {
             return userIsValid
