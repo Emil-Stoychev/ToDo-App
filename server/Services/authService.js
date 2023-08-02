@@ -74,7 +74,7 @@ const login = async (data) => {
         }
 
         let result = await new Promise((resolve, reject) => {
-            jwt.sign({ _id: user._id, username: user.username, email: user.email }, secret, { expiresIn: '2d' }, (err, token) => {
+            jwt.sign({ _id: user._id, email: user.email }, secret, { expiresIn: '2d' }, (err, token) => {
                 if (err) {
                     return reject(err)
                 }
@@ -83,7 +83,7 @@ const login = async (data) => {
             })
         })
 
-        return { message: 'yes', token: result, _id: user?._id, email: user?.email, username: user.username }
+        return { message: 'yes', token: result, _id: user?._id, email: user?.email }
     } catch (error) {
         return error
     }
@@ -229,7 +229,7 @@ const editProfile = async (data) => {
 
 const deleteAcc = async (password, userId) => {
     try {
-       
+
         return {}
     } catch (error) {
         console.error(error)

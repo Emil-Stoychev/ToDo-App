@@ -1,9 +1,10 @@
 import styles from './login.module.css'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import * as authService from '../../services/authService'
 import { useNavigate } from 'react-router-dom'
 
 import loginSchema from '../../joiValidator/login'
+import { AuthContext } from '../../context/authContext'
 
 const Login = () => {
     const [values, setValues] = useState({
@@ -15,6 +16,8 @@ const Login = () => {
         value: ''
     })
     const navigate = useNavigate()
+
+  const { setUser } = useContext(AuthContext)
 
     const onChangeHandler = (e) => {
         setValues(oldState => ({
@@ -47,10 +50,15 @@ const Login = () => {
                     if (res.message == 'yes') {
                         if(verifCode.option) setVerifCode({ option: false, value: '' })
                         
-                        // { token: res.result, _id: res._id, email: res.email, username: res.username }
-
-                        // localStorage.setItem('sessionStorage', res.token)
+                        setUser({
+                            token: res?.token,
+                            _id: res?._id,
+                            email: res?.email,
+                        })
+                        localStorage.setItem('sessionStorage', res.token)
                         console.log(res);
+
+                        navigate('/')
                     } else if (res.message == 'Email is not verified!') {
                         setVerifCode({ option: true, value: '' })
                         console.log(res);

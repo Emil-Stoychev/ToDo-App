@@ -13,6 +13,11 @@ export const getUserById = (token, userId) => {
         .then(res => res.json())
 }
 
+export const getUserByToken = (token) => {
+    return fetch(`${URL}/${token}`)
+        .then(res => res.json())
+}
+
 export const getUserByUsername = (token, searchValue) => {
     return fetch(`${URL}/getUserByUsernames/${token}/${searchValue}`)
         .then(res => res.json())
