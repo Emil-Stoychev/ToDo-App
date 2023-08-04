@@ -19,8 +19,6 @@ const LazyFAQComponent = lazy(() => import('./components/faq/FAQ.js'))
 function App() {
   const { user, setUser } = useContext(AuthContext)
 
-  console.log(user);
-
   return (
     <div className={styles.app}>
       <Navigation />
@@ -39,7 +37,7 @@ function App() {
             </>
             :
             <>
-              <Route path='/profile' element={<Suspense fallback={<LoadingSpinner />}><LazyProfileComponent /></Suspense>} />
+              <Route path='/profile/*' element={<Suspense fallback={<LoadingSpinner />}><LazyProfileComponent /></Suspense>} />
             </>
           }
 

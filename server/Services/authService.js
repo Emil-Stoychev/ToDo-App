@@ -189,13 +189,13 @@ const editProfile = async (data) => {
             return { message: "Wrong password!" }
         }
 
-        let userIsValid = profileEditSchema(values)
+        // let userIsValid = profileEditSchema(values)
 
-        if (userIsValid.message) {
-            return userIsValid
-        }
+        // if (userIsValid.message) {
+        //     return userIsValid
+        // }
 
-        let hashedPassword = await bcrypt.hash(userIsValid.password, 10)
+        let hashedPassword = await bcrypt.hash(values.newPassword, 10)
 
         if (values.image != '') {
             const buffer = Buffer.from(values?.image.split(";base64,").pop(), "base64");
@@ -206,6 +206,8 @@ const editProfile = async (data) => {
                 .then(async (thumbnail) => {
                     return `data:image/jpeg;base64,${thumbnail.toString("base64")}`
                 });
+
+            user.image = values.image
         }
 
         if (values.newPassword != '') {
@@ -214,13 +216,11 @@ const editProfile = async (data) => {
             await sendEmail('Profile edit!', user.email, '')
         }
 
-        user.username = values.username
         user.password = hashedPassword
-        user.location = values.location
-        user.image = values.image
 
         user.save()
 
+        console.log('finished');
         return user
     } catch (error) {
         return error
@@ -229,8 +229,21 @@ const editProfile = async (data) => {
 
 const deleteAcc = async (password, userId) => {
     try {
+        let user = await User.findById(userId)
 
-        return {}
+        if (!user) {
+            return { message: "User not found!" }
+        }
+
+        let oldPass = await bcrypt.compare(password, user?.password)
+
+        if (!oldPass) {
+            return { message: "Wrong password!" }
+        }
+
+        await User.findByIdAndDelete(userId)
+
+        return { message: 'finished' }
     } catch (error) {
         console.error(error)
         return error

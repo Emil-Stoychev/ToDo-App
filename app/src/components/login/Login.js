@@ -56,8 +56,6 @@ const Login = () => {
                             email: res?.email,
                         })
                         localStorage.setItem('sessionStorage', res.token)
-                        console.log(res);
-
                         navigate('/')
                     } else if (res.message == 'Email is not verified!') {
                         setVerifCode({ option: true, value: '' })
