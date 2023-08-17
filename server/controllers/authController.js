@@ -27,6 +27,14 @@ router.get('/toggleFollow/:token/:userId', authMiddleware, async (req, res) => {
     res.json(await authService.toggleFollowPerson(req.params.userId, req.params.user?._id))
 })
 
+router.get('/getUserFollowers/:token/:userId', authMiddleware, async (req, res) => {
+    res.json(await authService.getUserFollowers(req.params.userId))
+})
+
+router.get('/getUserFollowing/:token/:userId', authMiddleware, async (req, res) => {
+    res.json(await authService.getUserFollowing(req.params.userId))
+})
+
 router.put('/editImageProfile/:userId', authMiddleware, async (req, res) => {
     let updatedUser = await authService.editImageProfile(req.body)
 

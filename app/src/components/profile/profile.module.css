@@ -148,6 +148,144 @@
   margin-bottom: 1rem;
 }
 
+
+/* Followers and Following users box */
+
+.divForUsers {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 99%;
+  margin: 0 auto 2rem auto;
+  background-color: rgba(250, 235, 215, 0.106);
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 95%;
+}
+
+.xBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 1rem 0 1rem 1rem;
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+
+.xBtn:hover {
+  transform: scale(1.05);
+}
+
+.usersNavBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 2rem 0;
+  gap: 0.5rem;
+  height: 40px;
+}
+
+.usersNavBar > span {
+  color: #45f3ff;
+  width: 20px;
+  transition: all 300ms ease-in-out;
+  }
+
+  .usersNavBar > span:hover {
+    margin-bottom: 0.5rem;
+  }
+
+  .usersNavBar > h2 {
+    letter-spacing: 1px;
+    font-weight: 100;
+    cursor: pointer;
+  transition: all 300ms ease-in-out;
+  }
+
+  .usersNavBar > h2:hover {
+    margin-bottom: 0.5rem;
+  }
+
+  .usersRendering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .userTemplate {
+    width: 100%;
+  }
+
+  .userTemplate > div:first-child {
+    width: 80%;
+  }
+
+  .userTemplate > div:last-child {
+    width: 20%;
+  }
+
+  .userTemplate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    background-color: rgba(250, 235, 215, 0.116);
+    border-radius: 1rem;
+  }
+
+  .userTamplateTop {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .userTamplateTop > img {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+  }
+
+  .userTamplateTop > h2 {
+    font-size: 16px;
+    letter-spacing: 1px;
+    word-wrap: break-word;
+  }
+
+  .userTamplateBottom > button {
+    cursor: pointer;
+    user-select: none;
+    letter-spacing: 1px;
+    font-weight: bolder;
+    padding: 0.5rem 1rem;
+    background-color: antiquewhite;
+    border-radius: 0.5rem;
+    transition: all 200ms ease-in-out;
+    font-size: 10px;
+  }
+  
+  .userTamplateBottom > button:hover {
+    transform: rotate(6deg) scale(1.05);
+    margin-top: 0.5rem;
+    box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+  }
+
+  .h2Border {
+    border-bottom: 1.5px solid #45f3ff;
+    border-radius: 0.5rem;
+  }
+  
+
 @media screen and (max-width: 1500px) {
   .inputs {
     width: 50%;

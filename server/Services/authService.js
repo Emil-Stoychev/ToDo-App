@@ -23,6 +23,34 @@ const getUserById = async (userId) => {
   }
 };
 
+const getUserFollowers = async (userId) => {
+  try {
+    let userAcc = await User.findById(userId).populate('followers')
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    return userAcc?.followers;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getUserFollowing = async (userId) => {
+  try {
+    let userAcc = await User.findById(userId).populate('following')
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    return userAcc?.following;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getUserByUsernames = async (searchValue) => {
   try {
     let users = await User.find({ username: { $regex: "^" + searchValue } });
@@ -307,4 +335,6 @@ module.exports = {
   getAllUsersByIds,
   getUserByUsernames,
   editImageProfile,
+  getUserFollowers,
+  getUserFollowing
 };

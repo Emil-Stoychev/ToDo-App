@@ -28,6 +28,16 @@ export const toggleFollowPerson = (token, userId) => {
         .then(res => res.json())
 }
 
+export const getUserFollowing = (token, userId) => {
+    return fetch(`${URL}/getUserFollowing/${token}/${userId}`)
+        .then(res => res.json())
+}
+
+export const getUserFollowers = (token, userId) => {
+    return fetch(`${URL}/getUserFollowers/${token}/${userId}`)
+        .then(res => res.json())
+}
+
 export const register = (data) => {
     return fetch(`${URL}/register`, {
         method: "POST",
