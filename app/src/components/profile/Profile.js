@@ -227,10 +227,11 @@ const Profile = () => {
               <div className={styles.userTemplate} key={x._id}>
                 <div className={styles.userTamplateTop}>
                   <img
+                    onClick={() => navigateToUserAcc(x._id)}
                     src={x.image || "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"}
                     alt="user image"
                   />
-                  <h2>{x.email.split('@')[0]}</h2>
+                  <h2 onClick={() => navigateToUserAcc(x._id)}>{x.email.split('@')[0]} {x._id == user?._id && '(you)'}</h2>
                 </div>
 
                 <div className={styles.userTamplateBottom}>
