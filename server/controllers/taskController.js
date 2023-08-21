@@ -3,17 +3,35 @@ const router = require('express').Router()
 const { authMiddleware } = require('../Middlewares/authMiddleware')
 const taskService = require('../Services/taskService')
 
-router.get('/:trainingId', async (req, res) => {
-    let trainingProgram = await taskService.getById(req.params.trainingId)
+router.get('/:taskId', async (req, res) => {
+    let task = await taskService.getById(req.params.trainingId)
 
-    res.json(trainingProgram?._id ? trainingProgram : { message: "Empty" })
+    res.json(task?._id ? task : { message: "Empty" })
+})
+
+router.get('/:token/:userId', async (req, res) => {
+    let tasks = await taskService.getALlTasks(req.params.userId)
+
+    res.json(tasks)
+})
+
+router.get('/getTask/:taskId/:token',authMiddleware, async (req, res) => {
+    let task = await taskService.getCurrentTask(req.params.taskId, req.params.user._id)
+
+    res.json(task)
 })
 
 
-router.post('/create', authMiddleware, async (req, res) => {
-    let createdProgram = await taskService.create(req.body.data.mainInputTitle, req.body.data.container, req.body.data.category, req.params?.user?._id, req.body.data.visible, req.body.data?.price, req.body.data?.currency) || []
+router.post('/createNewMain/:token', authMiddleware, async (req, res) => {
+    let createdNewMain = await taskService.createNewMain(req.body.value, req.params?.user?._id)
 
-    res.json(createdProgram)
+    res.json(createdNewMain)
+})
+
+router.post('/createTask/:token', authMiddleware, async (req, res) => {
+    let createdTask = await taskService.createTask(req.body.value, req.body.taskId, req.params?.user?._id)
+
+    res.json(createdTask)
 })
 
 module.exports = router
