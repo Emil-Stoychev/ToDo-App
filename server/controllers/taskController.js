@@ -34,4 +34,22 @@ router.post('/createTask/:token', authMiddleware, async (req, res) => {
     res.json(createdTask)
 })
 
+router.put('/editTask/:token', authMiddleware, async (req, res) => {
+    let editedTask = await taskService.editTask(req.body.taskId, req.body.value, req.params?.user?._id)
+
+    res.json(editedTask)
+})
+
+router.put('/moveTask/:taskId/:mainId/:num/:token', authMiddleware, async (req, res) => {
+    let movedTask = await taskService.moveTask(req.params.taskId, req.params.mainId, req.params.num, req.params?.user?._id)
+
+    res.json(movedTask)
+})
+
+router.delete('/deleteTask/:taskId/:mainTaskId/:token', authMiddleware, async (req, res) => {
+    let deletedTask = await taskService.deleteTask(req.params.taskId, req.params.mainTaskId, req.params?.user?._id)
+
+    res.json(deletedTask)
+})
+
 module.exports = router

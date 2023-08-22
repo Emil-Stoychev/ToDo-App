@@ -37,3 +37,30 @@ export const createTask = (data) => {
         .then(res => res.json())
 }
 
+export const editTask = (taskId, value, token) => {
+    return fetch(`${URL}/editTask/${token}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({taskId, value})
+    })
+        .then(res => res.json())
+}
+
+export const moveTask = (taskId, mainId, num, token) => {
+    return fetch(`${URL}/moveTask/${taskId}/${mainId}/${num}/${token}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify()
+    })
+        .then(res => res.json())
+}
+
+export const deleteTask = (taskId, mainTaskId, token) => {
+    return fetch(`${URL}/deleteTask/${taskId}/${mainTaskId}/${token}`, {
+        method: "DELETE",
+    })
+}
