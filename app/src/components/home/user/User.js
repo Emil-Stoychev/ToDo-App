@@ -14,6 +14,7 @@ const User = () => {
   const { user, setUser } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [currentTask, setCurrentTask] = useState(undefined)
+  const [selectedValue, setSelectedValue] = useState('disabledOption')
   const [create, setCreate] = useState({
     option: false,
     value: "",
@@ -26,7 +27,9 @@ const User = () => {
       .then((res) => {
         if (!res.message) {
           setTasks(res);
-        //   setCurrentTask(res[res.length - 1])
+        //   if(!currentTask?._id) {
+        //       setCurrentTask(res[res.length - 1])
+        //   }
         } else {
           console.log(res);
         }
@@ -34,7 +37,7 @@ const User = () => {
   }, []);
 
   useEffect(() => {
-    if(currentTask != undefined) {
+    if(currentTask?._id != undefined) {
         taskService.getCurrentTask(currentTask._id, localStorage.getItem('sessionStorage'))
             .then(res => setCurrentTask(res))
     }
@@ -48,6 +51,7 @@ const User = () => {
             .then(res => {
                 if(!res.message) {
                     setCurrentTask(res)
+                    setSelectedValue(res?._id)
                 } else {
                     console.log(res)
                 }
@@ -60,7 +64,8 @@ const User = () => {
       {!create.option && (
         <>
           {tasks.length > 0 ? (
-            <select className={styles.selectTasks} onChange={(e) => onSelectChangeHandler(e)}>
+            <select className={styles.selectTasks} defaultValue={selectedValue} onChange={(e) => onSelectChangeHandler(e)}>
+                <option value="disabledOption" disabled>Choose an option</option>
               {tasks.map((x) => (
                 <option key={x._id} value={x._id}>{x.mainTitle}</option>
               ))}
