@@ -1,6 +1,7 @@
 import styles from "./user.module.css";
 
 import * as taskService from "../../../services/taskService";
+import { DeleteMain } from "./DeleteMain";
 
 export const Create = ({
   tasks,
@@ -23,8 +24,8 @@ export const Create = ({
         taskService.createNewMain(data).then((res) => {
           if (!res.message) {
             setTasks((state) => [...state, res]);
-            setCurrentTask(res);
             setCreate({ option: false, value: "", mode: "" });
+            setCurrentTask(res);
           } else {
             console.log(res);
           }
@@ -34,7 +35,6 @@ export const Create = ({
 
         taskService.createTask(data).then((res) => {
           if (!res.message) {
-            //   setTasks((state) => [...state, res]);
             setCurrentTask((state) => ({
               ...state,
               todo: [...state.todo, res],
@@ -83,19 +83,25 @@ export const Create = ({
 
       {!create.option && (
         <div className={styles.createBtns}>
-          <button
-            disabled={tasks.length < 1}
-            className={styles.primaryBtn}
-            onClick={() => setCreate({ option: true, value: "", mode: "task" })}
-          >
-            Add Task
-          </button>
+          {currentTask != undefined && (
+            <button
+              disabled={tasks.length < 1}
+              className={styles.primaryBtn}
+              onClick={() =>
+                setCreate({ option: true, value: "", mode: "task" })
+              }
+            >
+              Add Task
+            </button>
+          )}
           <button
             className={styles.primaryBtn}
             onClick={() => setCreate({ option: true, value: "", mode: "main" })}
           >
             Create New
           </button>
+
+          {currentTask != undefined && <DeleteMain currentTask={currentTask} setCurrentTask={setCurrentTask} setTasks={setTasks} />}
         </div>
       )}
     </>

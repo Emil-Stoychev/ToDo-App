@@ -64,3 +64,9 @@ export const deleteTask = (taskId, mainTaskId, token) => {
         method: "DELETE",
     })
 }
+
+export const deleteMainTask = (mainId, token) => {
+    return fetch(`${URL}/deleteMainTask/${mainId}/${token}`, {
+        method: "DELETE",
+    })
+}

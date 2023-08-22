@@ -230,6 +230,28 @@ const deleteTask = async (taskId, mainTaskId, userId) => {
   }
 };
 
+const deleteMainTask = async (mainTaskId, userId) => {
+    try {
+      let userAcc = await User.findById(userId);
+  
+      if (!userAcc) {
+        return { message: "User doesn't exist!" };
+      }
+  
+      let mainTask = await Task.findById(mainTaskId)
+
+      const idsToDelete = [...mainTask.todo, ...mainTask.inProgress, ...mainTask.done];
+
+      await TaskCnt.deleteMany({ _id: { $in: idsToDelete.map(id => mongoose.Types.ObjectId(id)) } });
+      
+      await Task.findByIdAndDelete(mainTaskId)
+      
+      return mainTask;
+    } catch (error) {
+      return error;
+    }
+  };
+
 module.exports = {
   getALlTasks,
   createNewMain,
@@ -238,4 +260,5 @@ module.exports = {
   deleteTask,
   editTask,
   moveTask,
+  deleteMainTask
 };

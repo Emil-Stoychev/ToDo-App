@@ -52,4 +52,10 @@ router.delete('/deleteTask/:taskId/:mainTaskId/:token', authMiddleware, async (r
     res.json(deletedTask)
 })
 
+router.delete('/deleteMainTask/:mainTaskId/:token', authMiddleware, async (req, res) => {
+    let deletedTask = await taskService.deleteMainTask(req.params.mainTaskId, req.params?.user?._id)
+
+    res.json(deletedTask)
+})
+
 module.exports = router

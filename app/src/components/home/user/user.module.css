@@ -171,7 +171,8 @@
   box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
 }
 
-.primaryBtn {
+.primaryBtn,
+.dangerBtn {
   cursor: pointer;
   user-select: none;
   letter-spacing: 1px;
@@ -186,9 +187,15 @@
   margin: 1rem auto 0 auto;
 }
 
-.primaryBtn:hover {
+.primaryBtn:hover,
+.dangerBtn:hover {
   transform: scale(1.02);
   box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+}
+
+.dangerBtn {
+  background-color: red;
+  color: white;
 }
 
 @media screen and (max-width: 1300px) {
