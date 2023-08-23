@@ -11,6 +11,7 @@ const Register = () => {
         email: '',
         password: '',
         rePassword: '',
+        username: '',
         image: ''
     })
     const uploadImage = useRef(null)
@@ -58,6 +59,11 @@ const Register = () => {
             <div className={styles.divInputs}>
                 <label htmlFor='re-password'>Re-pass</label>
                 <input type='password' id='re-password' value={values.rePassword} onChange={(e) => onChangeHandler(e)} name='rePassword' placeholder='*******' />
+            </div>
+
+            <div className={styles.divInputs}>
+                <label htmlFor='username'>Username</label>
+                <input type='text' id='username' value={values.username} onChange={(e) => onChangeHandler(e)} name='username' placeholder='John' />
             </div>
 
             <div className={styles.divInputs}>

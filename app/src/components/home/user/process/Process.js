@@ -1,10 +1,10 @@
-import { Task } from '../Task'
-import styles from '../task.module.css'
+import { Task } from '../task/Task'
+import styles from '../task/task.module.css'
 
 const Process = ({currentTask, setCurrentTask}) => {
     return (
         <div className={styles.main}>
-            <h2 className={styles.header}>PROCESS</h2>
+            <h2 className={styles.header}>PROCESS {currentTask?.inProgress?.length}</h2>
 
             <div className={styles.tasks}>
 

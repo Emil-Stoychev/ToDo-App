@@ -10,6 +10,10 @@ const schema = Joi.object({
         'string.min': 'RePassword must be at least {#limit} characters long',
         'any.required': 'RePassword is required',
     }),
+    username: Joi.string().min(3).max(32).required().messages({
+        'string.min': 'Username must be at least {#limit} characters long',
+        'any.required': 'Username is required',
+    }),
     image: Joi.string().min(3).required(),
 });
 

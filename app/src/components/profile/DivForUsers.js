@@ -62,7 +62,7 @@ export const DivForUsers = ({ showUsers, setShowUsers, user }) => {
                   alt="user image"
                 />
                 <h2 onClick={() => navigateToUserAcc(x._id)}>
-                  {x.email.split("@")[0]} {x._id == user?._id && "(you)"}
+                  {x?.username || ''} {x._id == user?._id && "(you)"}
                 </h2>
               </div>
 

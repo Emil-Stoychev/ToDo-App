@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "./user.module.css";
+import styles from "../user.module.css";
 
-import * as taskService from '../../../services/taskService'
+import * as taskService from '../../../../services/taskService'
 
 export const DeleteMain = ({ currentTask, setCurrentTask, setTasks }) => {
   const [del, setDel] = useState(false);
@@ -19,7 +19,7 @@ export const DeleteMain = ({ currentTask, setCurrentTask, setTasks }) => {
   };
 
   return (
-    <>
+    <div className={styles.deleteMainTaskBtns}>
       {del ? (
         <>
           <button
@@ -37,6 +37,6 @@ export const DeleteMain = ({ currentTask, setCurrentTask, setTasks }) => {
           Delete
         </button>
       )}
-    </>
+    </div>
   );
 };

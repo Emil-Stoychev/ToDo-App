@@ -44,7 +44,7 @@ export const TopUserDiv = ({
           </div>
 
           <div className={styles.name}>
-            <h2>{dataUser?.email.split("@")[0]}</h2>
+            <h2>{dataUser?.username || ''}</h2>
 
             <div className={styles.followersAndFollowing}>
               <h2

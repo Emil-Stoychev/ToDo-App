@@ -20,7 +20,7 @@ router.get('/:token', authMiddleware, async (req, res) => {
 })
 
 router.get('/getUserByUsernames/:token/:searchValue', authMiddleware, async (req, res) => {
-    res.json(await authService.getUserByUsernames(req.params.searchValue))
+    res.json(await authService.getUserByUsernames(req.params.searchValue, req.params.user?._id))
 })
 
 router.get('/toggleFollow/:token/:userId', authMiddleware, async (req, res) => {

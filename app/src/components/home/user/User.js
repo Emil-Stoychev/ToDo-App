@@ -8,7 +8,9 @@ import Todo from "./todo/Todo";
 import Done from "./done/Done";
 
 import * as taskService from "../../../services/taskService";
-import { Create } from "./Create";
+import { Create } from "./create/Create";
+import { Employees } from "./employees/Employees";
+import { SelectComponent } from "./select/SelectComponent";
 
 const User = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -20,6 +22,10 @@ const User = () => {
     value: "",
     mode: "",
   });
+  const [addUser, setAddUser] = useState({
+    option: false,
+    value: ''
+  })
   const [sliders, setSliders] = useState({
     option: false,
     num: 0,
@@ -37,13 +43,14 @@ const User = () => {
       });
   }, []);
 
-  console.log(sliders);
+  // console.log(sliders);
 
   useEffect(() => {
     if (currentTask?._id != undefined) {
       taskService
         .getCurrentTask(currentTask._id, localStorage.getItem("sessionStorage"))
         .then((res) => {
+          console.log(res);
           setCurrentTask(res);
           // setSelectedValue(res.mainTitle)
         });
@@ -52,47 +59,13 @@ const User = () => {
     }
   }, [currentTask?._id]);
 
-  const onSelectChangeHandler = (e) => {
-    let taskId = e.target.value;
-
-    taskService
-      .getCurrentTask(taskId, localStorage.getItem("sessionStorage"))
-      .then((res) => {
-        if (!res.message) {
-          setCurrentTask(res);
-          setSelectedValue(res?._id);
-        } else {
-          console.log(res);
-        }
-      });
-  };
-
   return (
     <div className={styles.mainCont}>
-      {!create.option && (
-        <>
-          {tasks.length > 0 ? (
-            <select
-              className={styles.selectTasks}
-              value={selectedValue}
-              onChange={(e) => onSelectChangeHandler(e)}
-            >
-              <option value="disabledOption" disabled>
-                Choose an option
-              </option>
-              {tasks.map((x) => (
-                <option key={x._id} value={x._id}>
-                  {x.mainTitle}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <h2 className={styles.h2Header}>You don't have any task yet!</h2>
-          )}
-        </>
-      )}
+      {!addUser.option && !create.option && <SelectComponent tasks={tasks} selectedValue={selectedValue} setSelectedValue={setSelectedValue} setCurrentTask={setCurrentTask} />}
 
-      {!create.option && (
+      {!create.option && <Employees addUser={addUser} setAddUser={setAddUser} currentTask={currentTask} setCreate={setCreate} />}
+
+      {!addUser.option && !create.option && (
         <div className={styles.container}>
           <Todo
             currentTask={currentTask}
@@ -100,15 +73,11 @@ const User = () => {
             sliders={sliders}
           />
 
-          <hr className={styles.line} />
-
           <Process
             currentTask={currentTask}
             setCurrentTask={setCurrentTask}
             sliders={sliders}
           />
-
-          <hr className={styles.line} />
 
           <Done
             currentTask={currentTask}
@@ -123,14 +92,15 @@ const User = () => {
         </div>
       )}
 
-      <Create
-        tasks={tasks}
-        create={create}
-        setCreate={setCreate}
-        setTasks={setTasks}
-        setCurrentTask={setCurrentTask}
-        currentTask={currentTask}
-      />
+      {!addUser.option &&
+        <Create
+          tasks={tasks}
+          create={create}
+          setCreate={setCreate}
+          setTasks={setTasks}
+          setCurrentTask={setCurrentTask}
+          currentTask={currentTask}
+        />}
     </div>
   );
 };

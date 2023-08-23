@@ -51,9 +51,16 @@ const getUserFollowing = async (userId) => {
   }
 };
 
-const getUserByUsernames = async (searchValue) => {
+const getUserByUsernames = async (searchValue, userId) => {
   try {
-    let users = await User.find({ username: { $regex: "^" + searchValue } });
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return { message: "User not found!" };
+    }
+
+    let users = await User.find({ username: { $regex: "^" + searchValue } })
+      .select(['image', 'username'])
 
     return users;
   } catch (error) {

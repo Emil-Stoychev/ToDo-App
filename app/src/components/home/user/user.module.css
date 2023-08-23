@@ -2,27 +2,23 @@
   display: flex;
   justify-content: center;
   padding: 1rem;
-  margin: 2rem auto 0 auto;
   height: 100%;
   width: 100%;
+  gap: 1rem;
   overflow-y: auto;
 }
 
 .mainCont {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
-  margin: 2rem auto 0 auto;
-  height: 100%;
+  padding: 2rem 1rem;
+  margin: 1rem 0.5rem;
+  height: 97%;
   overflow-y: auto;
-}
-
-.line {
-  border: 20px solid rgb(72, 72, 72);
-  height: 100%;
-  margin: 0 auto;
-  z-index: 3;
+  background-color: #00000060;
+  border-radius: 1rem;
 }
 
 .sliders {
@@ -54,17 +50,100 @@
 
 /* SELECT TASKS */
 .selectTasks {
-  width: 98.5%;
+  width: calc(90% - 50px);
   font-size: 28px;
   text-align: center;
   border-radius: 1rem;
   padding: 0.3rem 1rem;
-  margin: 0 auto;
   background-color: rgba(72, 72, 72, 0.76);
   color: white;
-  border-bottom: 5px solid white;
+  border: none;
   cursor: pointer;
-  box-shadow: 10px 15px 30px 0px rgba(255, 255, 255, 0.644);
+}
+
+.optionsBtn {
+  border: none;
+  background-color: transparent;
+  font-size: 42px;
+  right: 2rem;
+  position: absolute;
+  transition: all 300ms ease-in-out;
+}
+
+.optionsBtn:hover {
+  transform: scale(1.03);
+}
+
+/* ADD BUTTONS AFTER SELECT */
+
+.cntDivBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  gap: 1rem;
+  background-color: rgba(72, 72, 72, 0.76);
+  border-radius: 1rem;
+  width: 98%;
+  margin: 2rem auto 0 auto;
+}
+
+.divButtons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.divButtons > button {
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: none;
+  transition: all 200ms ease-in-out;
+  font-size: 32px;
+  padding: 1rem 0.5rem;
+}
+
+.divButtons > button:hover {
+  transform: scale(1.05);
+}
+
+.people {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.people > img {
+  width: 55px;
+  height: 50px;
+  border-radius: 100%;
+  object-fit: cover;
+  margin-left: -1.5rem;
+  z-index: 2;
+}
+
+.people > img:first-child {
+  margin-left: -0.5rem;
+}
+
+.numOfPeople {
+  width: 55px;
+  height: 55px;
+  letter-spacing: 2px;
+  font-size: 16px;
+  border-radius: 100%;
+  margin-left: -1rem;
+}
+
+.addNewMainTaskBtn {
+  border: none;
+  background-color: transparent;
+  font-size: 42px;
+  padding: 1rem 1rem 0 0;
 }
 
 /* CREATE TASK FROM */
@@ -89,8 +168,6 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin: 0 auto;
-  padding: 2rem 0;
   gap: 1rem;
 }
 
@@ -171,6 +248,55 @@
   box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
 }
 
+/* ADD NEW TASK DIV */
+
+.addNewTaskFrom {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.divInputsForTask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+.divInputsForTask > input {
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 50px;
+  padding-left: 1rem;
+  margin-left: 1rem;
+  border: none;
+  font-size: 28px;
+  transition: all 300ms ease-in-out;
+}
+
+.divInputsForTask > input:focus {
+  width: 100%;
+  border-radius: 1rem;
+  background-color: black;
+  color: white;
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+  margin-top: 0.2rem;
+}
+
+/* DELETE MAIN TASK BUTTONS DIV */
+
+.deleteMainTaskBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  margin: -1rem 1rem 0 0;
+}
+
+
+
+
 .primaryBtn,
 .dangerBtn {
   cursor: pointer;
@@ -197,6 +323,17 @@
   background-color: red;
   color: white;
 }
+
+/* CREATE, ADD AND DELETE BUTTONS DIV */
+
+.createBtns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
 
 @media screen and (max-width: 1300px) {
   .line {
