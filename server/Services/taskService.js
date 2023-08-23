@@ -125,6 +125,45 @@ const createTask = async (value, taskId, userId) => {
   }
 };
 
+
+const addOrRemoveUser = async (personId, mainId, userId) => {
+  try {
+    let userAcc = await User.findById(userId);
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    let person = await User.findById(personId);
+
+    if (!person) {
+      return { message: "This person doesn't exist!" };
+    }
+
+    let findTask = await Task.findById(mainId);
+
+    if (!findTask._id) {
+      return { message: "Task not found!" };
+    }
+
+    let option
+
+    if (findTask?.employees.includes(personId)) {
+      findTask.employees = findTask.employees.filter(x => x != personId)
+      option = true
+    } else {
+      findTask.employees.push(personId)
+      option = false
+    }
+
+    findTask.save()
+
+    return { option, email: person?.email, image: person?.image }
+  } catch (error) {
+    return error;
+  }
+};
+
 const editTask = async (taskId, value, userId) => {
   try {
     let userAcc = await User.findById(userId);
@@ -299,5 +338,6 @@ module.exports = {
   deleteTask,
   editTask,
   moveTask,
-  deleteMainTask
+  deleteMainTask,
+  addOrRemoveUser
 };

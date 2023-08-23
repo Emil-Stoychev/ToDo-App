@@ -1,0 +1,165 @@
+.primaryBtn {
+  position: absolute;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  padding: 0.5rem 1.5rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+  font-size: 24px;
+  margin-top: 2rem;
+  width: 25%;
+  margin: 1rem auto 0 auto;
+  bottom: 1rem;
+}
+
+.primaryBtn:hover {
+  transform: scale(1.02);
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+}
+
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  align-items: center;
+}
+
+.searchInput {
+  text-align: center;
+  transition: all 300ms ease-in-out;
+  width: 85%;
+  height: 35px;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 20px;
+  user-select: none;
+}
+
+.divForUsers {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 99%;
+  margin: 0 auto 2rem auto;
+  background-color: rgba(250, 235, 215, 0.106);
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 95%;
+}
+
+.usersNavBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 2rem 0;
+  gap: 0.5rem;
+  height: 40px;
+}
+
+.usersRendering {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.userTemplate {
+  width: 100%;
+}
+
+.userTemplate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  background-color: rgba(250, 235, 215, 0.116);
+  border-radius: 1rem;
+}
+
+.userTamplateTop {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.userTamplateTop > img {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.userTamplateTop > h2 {
+  font-size: 16px;
+  letter-spacing: 2px;
+  word-wrap: break-word;
+  cursor: pointer;
+  color: whitesmoke;
+}
+
+.smallBtns {
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 1px;
+  font-weight: bolder;
+  padding: 0.5rem 1rem;
+  background-color: antiquewhite;
+  border-radius: 0.5rem;
+  transition: all 200ms ease-in-out;
+  font-size: 18px;
+  margin-right: 0.5rem;
+}
+
+.smallBtns:hover {
+  transform: rotate(6deg) scale(1.05);
+  margin-top: 0.5rem;
+  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
+}
+
+.h2Border {
+  border-bottom: 1.5px solid #45f3ff;
+  border-radius: 0.5rem;
+}
+
+.usersNotFound {
+  text-align: center;
+  letter-spacing: 2px;
+  color: rgba(240, 248, 255, 0.733);
+}
+
+@media screen and (max-width: 700px) {
+  .smallBtns {
+    font-size: 14px;
+  }
+
+  .smallBtnsDiv {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .userTemplate {
+    flex-direction: column;
+  }
+
+  .userTamplateTop {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 700px) {
+}

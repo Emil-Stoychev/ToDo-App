@@ -63,7 +63,7 @@ const User = () => {
     <div className={styles.mainCont}>
       {!addUser.option && !create.option && <SelectComponent tasks={tasks} selectedValue={selectedValue} setSelectedValue={setSelectedValue} setCurrentTask={setCurrentTask} />}
 
-      {!create.option && <Employees addUser={addUser} setAddUser={setAddUser} currentTask={currentTask} setCreate={setCreate} />}
+      {!create.option && <Employees addUser={addUser} setAddUser={setAddUser} setCurrentTask={setCurrentTask} currentTask={currentTask} setCreate={setCreate} />}
 
       {!addUser.option && !create.option && (
         <div className={styles.container}>

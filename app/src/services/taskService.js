@@ -43,7 +43,7 @@ export const editTask = (taskId, value, token) => {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({taskId, value})
+        body: JSON.stringify({ taskId, value })
     })
         .then(res => res.json())
 }
@@ -55,6 +55,17 @@ export const moveTask = (taskId, mainId, num, token) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify()
+    })
+        .then(res => res.json())
+}
+
+export const addOrRemoveUserToProject = (userId, mainId, token) => {
+    return fetch(`${URL}/addOrRemoveUser/${token}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ userId, mainId })
     })
         .then(res => res.json())
 }

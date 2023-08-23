@@ -15,7 +15,7 @@ router.get('/:token/:userId', async (req, res) => {
     res.json(tasks)
 })
 
-router.get('/getTask/:taskId/:token',authMiddleware, async (req, res) => {
+router.get('/getTask/:taskId/:token', authMiddleware, async (req, res) => {
     let task = await taskService.getCurrentTask(req.params.taskId, req.params.user._id)
 
     res.json(task)
@@ -44,6 +44,12 @@ router.put('/moveTask/:taskId/:mainId/:num/:token', authMiddleware, async (req, 
     let movedTask = await taskService.moveTask(req.params.taskId, req.params.mainId, req.params.num, req.params?.user?._id)
 
     res.json(movedTask)
+})
+
+router.put('/addOrRemoveUser/:token', authMiddleware, async (req, res) => {
+    let editedTask = await taskService.addOrRemoveUser(req.body?.userId, req.body.mainId, req.params?.user?._id)
+
+    res.json(editedTask)
 })
 
 router.delete('/deleteTask/:taskId/:mainTaskId/:token', authMiddleware, async (req, res) => {
