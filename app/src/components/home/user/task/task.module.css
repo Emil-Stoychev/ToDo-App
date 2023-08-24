@@ -120,6 +120,57 @@
   bottom: -1.6rem;
 }
 
+/* TASK INFO TABLE */
+
+.taskInfoSubDiv {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.856);
+}
+
+.h2Header {
+  font-weight: 100;
+}
+
+.taskInfoSubDiv > div {
+  margin-bottom: 1.5rem;
+}
+
+.taskInfoSubDiv > h3 {
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 100;
+}
+
+.infoAuthor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.infoAuthor > img {
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.infoAuthor > h2 {
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 100;
+}
+
+.lastUpdatedAt {
+  position: absolute;
+  bottom: 0;
+}
+
 @media screen and (max-width: 1300px) {
   .taskHeader {
     font-size: 18px;
