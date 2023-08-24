@@ -29,7 +29,7 @@ router.post('/createNewMain/:token', authMiddleware, async (req, res) => {
 })
 
 router.post('/createTask/:token', authMiddleware, async (req, res) => {
-    let createdTask = await taskService.createTask(req.body.value, req.body.taskId, req.params?.user?._id)
+    let createdTask = await taskService.createTask(req.body.value, req.body.priority, req.body.taskId, req.params?.user?._id)
 
     res.json(createdTask)
 })
@@ -44,6 +44,12 @@ router.put('/moveTask/:taskId/:mainId/:num/:token', authMiddleware, async (req, 
     let movedTask = await taskService.moveTask(req.params.taskId, req.params.mainId, req.params.num, req.params?.user?._id)
 
     res.json(movedTask)
+})
+
+router.put('/changePriority/:taskId/:token', authMiddleware, async (req, res) => {
+    let changedTask = await taskService.changePriority(req.params.taskId, req.params?.user?._id)
+
+    res.json(changedTask)
 })
 
 router.put('/addOrRemoveUser/:token', authMiddleware, async (req, res) => {

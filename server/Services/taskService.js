@@ -90,7 +90,7 @@ const createNewMain = async (value, userId) => {
   }
 };
 
-const createTask = async (value, taskId, userId) => {
+const createTask = async (value, priority, taskId, userId) => {
   try {
     let userAcc = await User.findById(userId);
 
@@ -111,6 +111,7 @@ const createTask = async (value, taskId, userId) => {
     let createdTask = await TaskCnt.create({
       title: value,
       author: userId,
+      priority: priority == 'L' ? 'low' : priority == 'M' ? 'medium' : 'high'
     });
 
     findTask.todo.push(createdTask._id);
@@ -284,6 +285,32 @@ const moveTask = async (taskId, mainId, num, userId) => {
   }
 };
 
+const changePriority = async (taskId, userId) => {
+  try {
+    let userAcc = await User.findById(userId);
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    let findTask = await TaskCnt.findById(taskId);
+
+    if (!findTask._id) {
+      return { message: "Task not found!" };
+    }
+
+    let newPriority = findTask.priority == 'low' ? 'medium' : findTask.priority == 'medium' ? 'high' : 'low'
+
+    let editedTask = await TaskCnt.findByIdAndUpdate(taskId, {
+      $set: { priority: newPriority },
+    });
+
+    return newPriority;
+  } catch (error) {
+    return error;
+  }
+};
+
 const deleteTask = async (taskId, mainTaskId, userId) => {
   try {
     let userAcc = await User.findById(userId);
@@ -339,5 +366,6 @@ module.exports = {
   editTask,
   moveTask,
   deleteMainTask,
-  addOrRemoveUser
+  addOrRemoveUser,
+  changePriority
 };
