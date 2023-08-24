@@ -282,15 +282,6 @@
   transition: all 300ms ease-in-out;
 }
 
-.divInputsForTask > input:focus {
-  width: 100%;
-  border-radius: 1rem;
-  background-color: black;
-  color: white;
-  box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
-  margin-top: 0.2rem;
-}
-
 /* DELETE MAIN TASK BUTTONS DIV */
 
 .deleteMainTaskBtns {

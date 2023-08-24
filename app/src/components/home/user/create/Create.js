@@ -11,6 +11,7 @@ export const Create = ({
   setTasks,
   setCurrentTask,
   currentTask,
+  user
 }) => {
   const [selectValue, setSelectedValue] = useState('L')
 
@@ -110,7 +111,7 @@ export const Create = ({
             </form>
           )}
 
-          {currentTask != undefined && <DeleteMain currentTask={currentTask} setCurrentTask={setCurrentTask} setTasks={setTasks} />}
+          {currentTask != undefined && currentTask?.author?._id == user?._id && <DeleteMain currentTask={currentTask} setCurrentTask={setCurrentTask} setTasks={setTasks} />}
         </div>
       )}
     </>

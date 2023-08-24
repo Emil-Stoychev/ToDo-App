@@ -92,6 +92,7 @@
   align-items: center;
   padding: 1rem;
   gap: 1rem;
+  position: relative;
 }
 
 .userTamplateTop > img {
@@ -99,6 +100,7 @@
   height: 60px;
   border-radius: 100%;
   cursor: pointer;
+  object-fit: cover;
 }
 
 .userTamplateTop > h2 {
@@ -107,6 +109,21 @@
   word-wrap: break-word;
   cursor: pointer;
   color: whitesmoke;
+}
+
+.userRole {
+  font-size: 32px;
+  top: -0.5rem;
+  left: -0.5rem;
+  position: absolute;
+}
+
+.adminSpan {
+  color: rgb(223, 253, 151);
+  letter-spacing: 4px;
+  position: absolute;
+  left: 0;
+  bottom: -0.8rem;
 }
 
 .smallBtns {

@@ -12,7 +12,12 @@ const getALlTasks = async (userId) => {
       return { message: "User doesn't exist!" };
     }
 
-    return await Task.find({ author: userId });
+    return await Task.find({
+      $or: [
+        { author: userId },
+        { employees: userId }
+      ]
+    });
   } catch (error) {
     return error;
   }
@@ -30,26 +35,26 @@ const getCurrentTask = async (taskId, userId) => {
       {
         path: 'todo',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
         path: 'inProgress',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
         path: 'done',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
-        path: 'admins author employees', select: ['image', 'email']
+        path: 'admins author employees', select: ['image', 'email', 'username']
       }
     ]);
   } catch (error) {
@@ -80,9 +85,6 @@ const createNewMain = async (value, userId) => {
       author: userId,
       admins: [userId],
     });
-
-    userAcc.tasks.push(createdMain._id);
-    userAcc.save();
 
     return createdMain;
   } catch (error) {
@@ -119,7 +121,7 @@ const createTask = async (value, priority, taskId, userId) => {
 
     return await TaskCnt.findById(createdTask?._id)
       .populate([
-        { path: 'author', select: ['image', 'email'] }
+        { path: 'author', select: ['image', 'email', 'username'] }
       ]);
   } catch (error) {
     return error;
@@ -151,15 +153,18 @@ const addOrRemoveUser = async (personId, mainId, userId) => {
 
     if (findTask?.employees.includes(personId)) {
       findTask.employees = findTask.employees.filter(x => x != personId)
+      person.foreignTask = person.foreignTask.filter(x => x != mainId)
       option = true
     } else {
       findTask.employees.push(personId)
+      person.foreignTask.push(mainId)
       option = false
     }
 
+    person.save()
     findTask.save()
 
-    return { option, email: person?.email, image: person?.image }
+    return { option, email: person?.email, image: person?.image, username: person?.username }
   } catch (error) {
     return error;
   }
@@ -258,26 +263,26 @@ const moveTask = async (taskId, mainId, num, userId) => {
       {
         path: 'todo',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
         path: 'inProgress',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
         path: 'done',
         populate: [
-          { path: 'author', select: ['image', 'email'] },
-          { path: 'workOnIt', select: ['image', 'email'] }
+          { path: 'author', select: ['image', 'email', 'username'] },
+          { path: 'workOnIt', select: ['image', 'email', 'username'] }
         ]
       },
       {
-        path: 'admins author employees', select: ['image', 'email']
+        path: 'admins author employees', select: ['image', 'email', 'username']
       }
     ]);
   } catch (error) {
@@ -301,11 +306,48 @@ const changePriority = async (taskId, userId) => {
 
     let newPriority = findTask.priority == 'low' ? 'medium' : findTask.priority == 'medium' ? 'high' : 'low'
 
-    let editedTask = await TaskCnt.findByIdAndUpdate(taskId, {
+    await TaskCnt.findByIdAndUpdate(taskId, {
       $set: { priority: newPriority },
     });
 
     return newPriority;
+  } catch (error) {
+    return error;
+  }
+};
+
+const addOrRemoveAdmin = async (personId, mainId, userId) => {
+  try {
+    let userAcc = await User.findById(userId);
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    let person = await User.findById(personId);
+
+    if (!person) {
+      return { message: "User doesn't exist!" };
+    }
+
+    let findTask = await Task.findById(mainId);
+
+    if (!findTask._id) {
+      return { message: "Task not found!" };
+    }
+
+    let option
+
+    if (findTask.admins.includes(person?._id)) {
+      await Task.findByIdAndUpdate(mainId, { $pull: { admins: person?._id } })
+      option = 'remove'
+    } else {
+      findTask.admins.push(person?._id)
+      await Task.findByIdAndUpdate(mainId, { $push: { admins: person?._id } })
+      option = 'add'
+    }
+
+    return option == 'add' ? { option, email: person.email, image: person.image, username: person.username, _id: person?._id } : { option, _id: person._id }
   } catch (error) {
     return error;
   }
@@ -349,7 +391,16 @@ const deleteMainTask = async (mainTaskId, userId) => {
 
     await TaskCnt.deleteMany({ _id: { $in: idsToDelete.map(id => mongoose.Types.ObjectId(id)) } });
 
+    const employeesUsers = await User.find({ _id: { $in: [...mainTask.employees] } });
+
+    await User.updateMany(
+      { _id: { $in: employeesUsers.map(user => user._id) } },
+      { $pull: { foreignTask: { $in: mainTask?._id } } }
+    );
+
     await Task.findByIdAndDelete(mainTaskId)
+
+
 
     return mainTask;
   } catch (error) {
@@ -367,5 +418,6 @@ module.exports = {
   moveTask,
   deleteMainTask,
   addOrRemoveUser,
-  changePriority
+  changePriority,
+  addOrRemoveAdmin
 };

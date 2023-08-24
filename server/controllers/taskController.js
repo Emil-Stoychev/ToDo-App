@@ -52,6 +52,12 @@ router.put('/changePriority/:taskId/:token', authMiddleware, async (req, res) =>
     res.json(changedTask)
 })
 
+router.put('/addOrRemoveAdmin/:userId/:mainId/:token', authMiddleware, async (req, res) => {
+    let changedTask = await taskService.addOrRemoveAdmin(req.params.userId, req.params.mainId, req.params?.user?._id)
+
+    res.json(changedTask)
+})
+
 router.put('/addOrRemoveUser/:token', authMiddleware, async (req, res) => {
     let editedTask = await taskService.addOrRemoveUser(req.body?.userId, req.body.mainId, req.params?.user?._id)
 

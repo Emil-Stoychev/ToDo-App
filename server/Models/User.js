@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
     },
     verification: String,
     image: String,
-    tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     foreignTask: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],

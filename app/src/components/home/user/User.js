@@ -36,6 +36,7 @@ const User = () => {
       .getUserTasks(localStorage.getItem("sessionStorage"), user?._id)
       .then((res) => {
         if (!res.message) {
+          console.log(res);
           setTasks(res);
         } else {
           console.log(res);
@@ -63,7 +64,7 @@ const User = () => {
     <div className={styles.mainCont}>
       {!addUser.option && !create.option && <SelectComponent tasks={tasks} selectedValue={selectedValue} setSelectedValue={setSelectedValue} setCurrentTask={setCurrentTask} />}
 
-      {!create.option && <Employees addUser={addUser} setAddUser={setAddUser} setCurrentTask={setCurrentTask} currentTask={currentTask} setCreate={setCreate} />}
+      {!create.option && <Employees user={user} addUser={addUser} setAddUser={setAddUser} setCurrentTask={setCurrentTask} currentTask={currentTask} setCreate={setCreate} />}
 
       {!addUser.option && !create.option && (
         <div className={styles.container}>
@@ -100,6 +101,7 @@ const User = () => {
           setTasks={setTasks}
           setCurrentTask={setCurrentTask}
           currentTask={currentTask}
+          user={user}
         />}
     </div>
   );
