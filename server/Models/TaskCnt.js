@@ -13,6 +13,15 @@ const TaskCntSchema = new mongoose.Schema({
         enum: ['todo', 'inProgress', 'done'],
         default: 'todo'
     },
+    history: [
+        {
+          user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+          action: String,
+          createdAt: {
+            type: Date, default: Date.now
+          }
+        }
+      ],
     workOnIt: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 },
     { timestamps: true },

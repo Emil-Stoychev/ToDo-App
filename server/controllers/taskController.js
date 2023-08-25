@@ -21,6 +21,12 @@ router.get('/getTask/:taskId/:token', authMiddleware, async (req, res) => {
     res.json(task)
 })
 
+router.get('/getCurrentTaskHistory/:taskId/:skipNum/:token', authMiddleware, async (req, res) => {
+    let taskHistory = await taskService.getCurrentTaskHistory(req.params.taskId, req.params.skipNum, req.params.user._id)
+
+    res.json(taskHistory)
+})
+
 
 router.post('/createNewMain/:token', authMiddleware, async (req, res) => {
     let createdNewMain = await taskService.createNewMain(req.body.value, req.params?.user?._id)

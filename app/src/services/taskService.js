@@ -13,7 +13,10 @@ export const getCurrentTask = (taskId, token) => {
         .then(res => res.json())
 }
 
-
+export const getCurrentTaskHistory = (taskId, num, token) => {
+    return fetch(`${URL}/getCurrentTaskHistory/${taskId}/${num}/${token}`)
+        .then(res => res.json())
+}
 
 export const createNewMain = (data) => {
     return fetch(`${URL}/createNewMain/${data.token}`, {

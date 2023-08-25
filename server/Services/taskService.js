@@ -13,10 +13,7 @@ const getALlTasks = async (userId) => {
     }
 
     return await Task.find({
-      $or: [
-        { author: userId },
-        { employees: userId }
-      ]
+      $or: [{ author: userId }, { employees: userId }],
     });
   } catch (error) {
     return error;
@@ -33,30 +30,58 @@ const getCurrentTask = async (taskId, userId) => {
 
     return await Task.findById(taskId).populate([
       {
-        path: 'todo',
+        path: "todo",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'inProgress',
+        path: "inProgress",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'done',
+        path: "done",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'admins author employees', select: ['image', 'email', 'username']
-      }
+        path: "admins author employees",
+        select: ["image", "email", "username"],
+      },
     ]);
+  } catch (error) {
+    return error;
+  }
+};
+
+const getCurrentTaskHistory = async (taskId, skipNum, userId) => {
+  try {
+    let userAcc = await User.findById(userId);
+
+    if (!userAcc) {
+      return { message: "User doesn't exist!" };
+    }
+
+    let { history } = await TaskCnt.findById(taskId)
+      .select("history")
+      .slice({
+        history: [Number(skipNum), Number(5)],
+      })
+      .populate({
+        path: "history",
+        populate: {
+          path: "user",
+          select: ["image", "email", "username"],
+        },
+      });
+
+    return history;
   } catch (error) {
     return error;
   }
@@ -113,21 +138,25 @@ const createTask = async (value, priority, taskId, userId) => {
     let createdTask = await TaskCnt.create({
       title: value,
       author: userId,
-      priority: priority == 'L' ? 'low' : priority == 'M' ? 'medium' : 'high'
+      priority: priority == "L" ? "low" : priority == "M" ? "medium" : "high",
+      $push: {
+        history: {
+          $each: [{ user: userId, action: "Created" }],
+          $position: 0,
+        },
+      },
     });
 
     findTask.todo.push(createdTask._id);
     findTask.save();
 
-    return await TaskCnt.findById(createdTask?._id)
-      .populate([
-        { path: 'author', select: ['image', 'email', 'username'] }
-      ]);
+    return await TaskCnt.findById(createdTask?._id).populate([
+      { path: "author", select: ["image", "email", "username"] },
+    ]);
   } catch (error) {
     return error;
   }
 };
-
 
 const addOrRemoveUser = async (personId, mainId, userId) => {
   try {
@@ -149,22 +178,27 @@ const addOrRemoveUser = async (personId, mainId, userId) => {
       return { message: "Task not found!" };
     }
 
-    let option
+    let option;
 
     if (findTask?.employees.includes(personId)) {
-      findTask.employees = findTask.employees.filter(x => x != personId)
-      person.foreignTask = person.foreignTask.filter(x => x != mainId)
-      option = true
+      findTask.employees = findTask.employees.filter((x) => x != personId);
+      person.foreignTask = person.foreignTask.filter((x) => x != mainId);
+      option = true;
     } else {
-      findTask.employees.push(personId)
-      person.foreignTask.push(mainId)
-      option = false
+      findTask.employees.push(personId);
+      person.foreignTask.push(mainId);
+      option = false;
     }
 
-    person.save()
-    findTask.save()
+    person.save();
+    findTask.save();
 
-    return { option, email: person?.email, image: person?.image, username: person?.username }
+    return {
+      option,
+      email: person?.email,
+      image: person?.image,
+      username: person?.username,
+    };
   } catch (error) {
     return error;
   }
@@ -190,6 +224,12 @@ const editTask = async (taskId, value, userId) => {
 
     let editedTask = await TaskCnt.findByIdAndUpdate(taskId, {
       $set: { title: value },
+      $push: {
+        history: {
+          $each: [{ user: userId, action: `Edit title to: "${value}"` }],
+          $position: 0,
+        },
+      },
     });
 
     return editedTask;
@@ -215,6 +255,12 @@ const moveTask = async (taskId, mainId, num, userId) => {
     if (findTask.in == "todo") {
       await TaskCnt.findByIdAndUpdate(taskId, {
         $set: { in: "inProgress", workOnIt: userId },
+        $push: {
+          history: {
+            $each: [{ user: userId, action: "Move to inProgress" }],
+            $position: 0,
+          },
+        },
       });
 
       await Task.findByIdAndUpdate(mainId, {
@@ -225,6 +271,12 @@ const moveTask = async (taskId, mainId, num, userId) => {
       if (num == 1) {
         await TaskCnt.findByIdAndUpdate(taskId, {
           $set: { in: "todo", workOnIt: undefined },
+          $push: {
+            history: {
+              $each: [{ user: userId, action: "Return to todo" }],
+              $position: 0,
+            },
+          },
         });
 
         await Task.findByIdAndUpdate(mainId, {
@@ -234,6 +286,12 @@ const moveTask = async (taskId, mainId, num, userId) => {
       } else {
         await TaskCnt.findByIdAndUpdate(taskId, {
           $set: { in: "done", workOnIt: userId },
+          $push: {
+            history: {
+              $each: [{ user: userId, action: "Move to done" }],
+              $position: 0,
+            },
+          },
         });
 
         await Task.findByIdAndUpdate(mainId, {
@@ -245,6 +303,12 @@ const moveTask = async (taskId, mainId, num, userId) => {
       if (num == 1) {
         await TaskCnt.findByIdAndUpdate(taskId, {
           $set: { in: "inProgress", workOnIt: userId },
+          $push: {
+            history: {
+              $each: [{ user: userId, action: "Return to inProgress" }],
+              $position: 0,
+            },
+          },
         });
 
         await Task.findByIdAndUpdate(mainId, {
@@ -261,29 +325,30 @@ const moveTask = async (taskId, mainId, num, userId) => {
 
     return await Task.findById(mainId).populate([
       {
-        path: 'todo',
+        path: "todo",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'inProgress',
+        path: "inProgress",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'done',
+        path: "done",
         populate: [
-          { path: 'author', select: ['image', 'email', 'username'] },
-          { path: 'workOnIt', select: ['image', 'email', 'username'] }
-        ]
+          { path: "author", select: ["image", "email", "username"] },
+          { path: "workOnIt", select: ["image", "email", "username"] },
+        ],
       },
       {
-        path: 'admins author employees', select: ['image', 'email', 'username']
-      }
+        path: "admins author employees",
+        select: ["image", "email", "username"],
+      },
     ]);
   } catch (error) {
     return error;
@@ -304,10 +369,26 @@ const changePriority = async (taskId, userId) => {
       return { message: "Task not found!" };
     }
 
-    let newPriority = findTask.priority == 'low' ? 'medium' : findTask.priority == 'medium' ? 'high' : 'low'
+    let newPriority =
+      findTask.priority == "low"
+        ? "medium"
+        : findTask.priority == "medium"
+        ? "high"
+        : "low";
 
     await TaskCnt.findByIdAndUpdate(taskId, {
       $set: { priority: newPriority },
+      $push: {
+        history: {
+          $each: [
+            {
+              user: userId,
+              action: `Change priority from ${findTask.priority} to ${newPriority}`,
+            },
+          ],
+          $position: 0,
+        },
+      },
     });
 
     return newPriority;
@@ -336,18 +417,26 @@ const addOrRemoveAdmin = async (personId, mainId, userId) => {
       return { message: "Task not found!" };
     }
 
-    let option
+    let option;
 
     if (findTask.admins.includes(person?._id)) {
-      await Task.findByIdAndUpdate(mainId, { $pull: { admins: person?._id } })
-      option = 'remove'
+      await Task.findByIdAndUpdate(mainId, { $pull: { admins: person?._id } });
+      option = "remove";
     } else {
-      findTask.admins.push(person?._id)
-      await Task.findByIdAndUpdate(mainId, { $push: { admins: person?._id } })
-      option = 'add'
+      findTask.admins.push(person?._id);
+      await Task.findByIdAndUpdate(mainId, { $push: { admins: person?._id } });
+      option = "add";
     }
 
-    return option == 'add' ? { option, email: person.email, image: person.image, username: person.username, _id: person?._id } : { option, _id: person._id }
+    return option == "add"
+      ? {
+          option,
+          email: person.email,
+          image: person.image,
+          username: person.username,
+          _id: person?._id,
+        }
+      : { option, _id: person._id };
   } catch (error) {
     return error;
   }
@@ -385,22 +474,28 @@ const deleteMainTask = async (mainTaskId, userId) => {
       return { message: "User doesn't exist!" };
     }
 
-    let mainTask = await Task.findById(mainTaskId)
+    let mainTask = await Task.findById(mainTaskId);
 
-    const idsToDelete = [...mainTask.todo, ...mainTask.inProgress, ...mainTask.done];
+    const idsToDelete = [
+      ...mainTask.todo,
+      ...mainTask.inProgress,
+      ...mainTask.done,
+    ];
 
-    await TaskCnt.deleteMany({ _id: { $in: idsToDelete.map(id => mongoose.Types.ObjectId(id)) } });
+    await TaskCnt.deleteMany({
+      _id: { $in: idsToDelete.map((id) => mongoose.Types.ObjectId(id)) },
+    });
 
-    const employeesUsers = await User.find({ _id: { $in: [...mainTask.employees] } });
+    const employeesUsers = await User.find({
+      _id: { $in: [...mainTask.employees] },
+    });
 
     await User.updateMany(
-      { _id: { $in: employeesUsers.map(user => user._id) } },
+      { _id: { $in: employeesUsers.map((user) => user._id) } },
       { $pull: { foreignTask: { $in: mainTask?._id } } }
     );
 
-    await Task.findByIdAndDelete(mainTaskId)
-
-
+    await Task.findByIdAndDelete(mainTaskId);
 
     return mainTask;
   } catch (error) {
@@ -419,5 +514,6 @@ module.exports = {
   deleteMainTask,
   addOrRemoveUser,
   changePriority,
-  addOrRemoveAdmin
+  addOrRemoveAdmin,
+  getCurrentTaskHistory,
 };
