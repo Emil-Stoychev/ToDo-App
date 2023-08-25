@@ -182,6 +182,7 @@ const addOrRemoveUser = async (personId, mainId, userId) => {
 
     if (findTask?.employees.includes(personId)) {
       findTask.employees = findTask.employees.filter((x) => x != personId);
+      findTask.admins = findTask.admins.filter((x) => x != personId);
       person.foreignTask = person.foreignTask.filter((x) => x != mainId);
       option = true;
     } else {

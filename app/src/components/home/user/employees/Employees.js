@@ -46,6 +46,7 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                 if (!res.message) {
                     setCurrentTask(state => ({
                         ...state,
+                        admins: res.option == true ? state.admins.filter(x => x?._id != userId) : state.admins,
                         employees: res.option == true
                             ? state.employees.filter(x => x?._id != userId)
                             : [...state.employees, { _id: userId, email: res?.email, image: res?.image, username: res?.username }]
@@ -117,7 +118,7 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                                 </div>
 
                                 <div className={stylesEmployees.smallBtnsDiv}>
-                                    {currentTask?.author?._id != user?._id || currentTask?.admins.some(y => y?._id == user?._id) && x?._id != user?._id && <button onClick={() => addOrRemoveAdmin(x?._id)} className={stylesEmployees.smallBtns}>{currentTask?.admins?.some(y => y._id == x?._id) ? 'Remove admin' : 'Make admin'}</button>}
+                                    {currentTask?.employees.find(y => y?._id == x?._id) ? currentTask?.author?._id != user?._id || currentTask?.admins.some(y => y?._id == user?._id) && x?._id != user?._id && <button onClick={() => addOrRemoveAdmin(x?._id)} className={stylesEmployees.smallBtns}>{currentTask?.admins?.some(y => y._id == x?._id) ? 'Remove admin' : 'Make admin'}</button> : ''}
                                     <button onClick={() => navigate(`/profile/${x?._id}`)} className={stylesEmployees.smallBtns}>View</button>
                                     {currentTask?.author?._id != x?._id && currentTask?.admins.some(y => y?._id == user?._id) && <button onClick={() => addUserToProject(x?._id)} className={stylesEmployees.smallBtns}>{currentTask?.employees?.some(y => y._id == x?._id) ? 'Remove' : 'Add to project'}</button>}
                                 </div>

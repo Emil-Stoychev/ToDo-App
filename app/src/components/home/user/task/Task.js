@@ -219,7 +219,7 @@ export const Task = ({ x, currentTask, setCurrentTask }) => {
                     <div key={y?._id} className={styles.divHistory}>
                       <div className={styles.historyAuthor}>
                         <img src={y?.user?.image} />
-                        <h2>{y?.user?.username}</h2>
+                        <h2>{y?.user?.username} {y?.user?._id == user?._id && "(you)"}</h2>
                       </div>
 
                       <h2 className={styles.h2HeaderForHistory}>{y?.action}</h2>
