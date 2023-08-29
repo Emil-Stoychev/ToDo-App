@@ -64,12 +64,15 @@
 
 .usersRendering {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 1rem;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+  height: 95%;
+  overflow-y: auto;
+  margin-bottom: 3rem;
 }
 
 .userTemplate {
@@ -156,9 +159,11 @@
   color: rgba(240, 248, 255, 0.733);
 }
 
-@media screen and (max-width: 700px) {
-  .smallBtns {
-    font-size: 14px;
+@media screen and (max-width: 850px) {
+
+  .smallBtns,
+  .primaryBtn {
+    font-size: 16px;
   }
 
   .smallBtnsDiv {
@@ -166,6 +171,12 @@
     justify-content: flex-end;
     width: 100%;
     flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .smallBtns {
+    font-size: 14px;
   }
 
   .userTemplate {
@@ -178,5 +189,50 @@
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 500px) {
+  .smallBtns,
+  .primaryBtn {
+    font-size: 10px;
+  }
+
+  .userTamplateTop > h2 {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .smallBtnsDiv {
+    justify-content: center;
+  }
+
+  .userTamplateTop > h2 {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+
+  .userTamplateTop {
+    justify-content: center;
+    flex-direction: column;
+    padding: 1rem 0;
+  }
+  
+  .userTamplateTop > img {
+    margin: 0 auto;
+  }
+  
+  .userTamplateTop > h2 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .adminSpan {
+    text-align: center;
+    width: 100%;
+  }
+  
+  .userTamplateTop > h2 {
+    font-size: 12px;
+  }
 }

@@ -255,6 +255,12 @@
     color: white;
   }
 
+  .tasks {
+    height: 350px;
+    position: relative;
+    padding: 1rem;
+  }
+
   .taskHeader {
     width: 100%;
     font-size: 14px;
