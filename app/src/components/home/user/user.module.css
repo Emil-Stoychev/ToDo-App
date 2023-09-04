@@ -11,7 +11,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 2rem 1rem;
   margin: 1rem 0.5rem;
   height: 97%;
@@ -248,7 +247,7 @@
 }
 
 .create > button:hover {
-  transform: scale(1.03) rotate(3deg) ;
+  transform: scale(1.03) rotate(3deg);
   box-shadow: 10px 10px 31px 0px rgba(255, 255, 255, 0.4);
 }
 
@@ -271,10 +270,10 @@
 }
 
 .divInputsForTask {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
 }
 
 .divInputsForTask > input {
@@ -295,9 +294,6 @@
   width: 35%;
   margin: -1rem 1rem 0 0;
 }
-
-
-
 
 .primaryBtn,
 .dangerBtn {
@@ -336,6 +332,15 @@
   width: 100%;
 }
 
+/* TASKS BOTTOM HEADER */
+
+.tasksHeader {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #00000060;
+}
 
 @media screen and (max-width: 1300px) {
   .line {
@@ -357,15 +362,17 @@
   }
 
   .container {
+    position: relative;
     width: 100%;
+    min-height: 80%;
     flex-direction: column;
   }
 
   .sliders {
-    width: 100%;
+    margin: 1rem auto 2rem auto;
+    width: 80%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
 
   .arrowBtn {
@@ -378,19 +385,18 @@
 }
 
 @media screen and (max-width: 650px) {
-
   .createBtns {
     flex-wrap: wrap;
   }
 
   .divInputsForTask {
     width: 100%;
-}
+  }
 
-.deleteMainTaskBtns {
-  width: 90%;
-  margin: 0 auto;
-}
+  .deleteMainTaskBtns {
+    width: 90%;
+    margin: 0 auto;
+  }
 }
 
 @media screen and (max-width: 570px) {
@@ -431,20 +437,17 @@
 }
 
 @media screen and (max-width: 450px) {
-  
   .addNewMainTaskBtn {
     width: 100%;
     margin: 0 auto;
   }
-
-
 }
 
 @media screen and (max-width: 360px) {
   .create {
     width: 100%;
   }
-  
+
   .divInputs > textarea {
     font-size: 20px;
   }
@@ -475,22 +478,20 @@
 }
 
 @media screen and (max-width: 300px) {
-
   .people > img {
     margin-left: -2rem;
   }
 
   .numOfPeople {
-  margin-left: -1.5rem;
-  z-index: 3;
-}
+    margin-left: -1.5rem;
+    z-index: 3;
+  }
 
-.divButtons > button,
-.addNewMainTaskBtn {
-  font-size: 28px;
-  padding: 0.5rem 0;
-}
-
+  .divButtons > button,
+  .addNewMainTaskBtn {
+    font-size: 28px;
+    padding: 0.5rem 0;
+  }
 }
 
 @media screen and (max-width: 250px) {
@@ -499,7 +500,7 @@
   }
 
   .divInputs > textarea {
-    max-width: 150px
+    max-width: 150px;
   }
 
   .people > img {
@@ -509,20 +510,20 @@
   }
 
   .numOfPeople {
-  margin-left: -2rem;
-  z-index: 3;
-  height: 45px;
-  width: 45px;
-}
+    margin-left: -2rem;
+    z-index: 3;
+    height: 45px;
+    width: 45px;
+  }
 
-.optionsBtn {
-  font-size: 28px;
-}
+  .optionsBtn {
+    font-size: 28px;
+  }
 }
 
 @media screen and (max-width: 200px) {
   .divInputs > textarea {
-    max-width: 100px
+    max-width: 100px;
   }
 
   .divInputs > textarea {

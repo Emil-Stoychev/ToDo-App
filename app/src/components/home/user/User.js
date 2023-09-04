@@ -3,14 +3,11 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import { AuthContext } from "../../../context/authContext";
 
-import Process from "./process/Process";
-import Todo from "./todo/Todo";
-import Done from "./done/Done";
-
 import * as taskService from "../../../services/taskService";
 import { Create } from "./create/Create";
 import { Employees } from "./employees/Employees";
 import { SelectComponent } from "./select/SelectComponent";
+import { TasksSeparator } from "./TasksSeparator";
 
 const User = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -45,6 +42,27 @@ const User = () => {
   }, []);
 
   // console.log(sliders);
+  useEffect(() => {
+    if (window.innerWidth > 980) {
+      setSliders({ option: false, num: 0 })
+    } else {
+      setSliders(state => ({
+        ...state,
+        option: true
+      }))
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 980) {
+        setSliders({ option: false, num: 0 })
+      } else {
+        setSliders(state => ({
+          ...state,
+          option: true
+        }))
+      }
+    })
+  }, [])
 
   useEffect(() => {
     if (currentTask?._id != undefined) {
@@ -60,6 +78,34 @@ const User = () => {
     }
   }, [currentTask?._id]);
 
+  const onSlidersBtn = (n) => {
+    if (n == 0) {
+      if (sliders.num == 0) {
+        setSliders(state => ({
+          ...state,
+          num: 2
+        }))
+      } else {
+        setSliders(state => ({
+          ...state,
+          num: state.num - 1
+        }))
+      }
+    } else {
+      if (sliders.num == 2) {
+        setSliders(state => ({
+          ...state,
+          num: 0
+        }))
+      } else {
+        setSliders(state => ({
+          ...state,
+          num: state.num + 1
+        }))
+      }
+    }
+  }
+
   return (
     <div className={styles.mainCont}>
       {!addUser.option && !create.option && <SelectComponent tasks={tasks} selectedValue={selectedValue} setSelectedValue={setSelectedValue} setCurrentTask={setCurrentTask} />}
@@ -68,30 +114,19 @@ const User = () => {
 
       {!addUser.option && !create.option && (
         <div className={styles.container}>
-          <Todo
-            currentTask={currentTask}
-            setCurrentTask={setCurrentTask}
-            sliders={sliders}
-          />
-
-          <Process
-            currentTask={currentTask}
-            setCurrentTask={setCurrentTask}
-            sliders={sliders}
-          />
-
-          <Done
-            currentTask={currentTask}
-            setCurrentTask={setCurrentTask}
-            sliders={sliders}
-          />
-
-          <div className={styles.sliders}>
-            <button className={styles.arrowBtn}>&#8810;</button>
-            <button className={styles.arrowBtn}>&#8811;</button>
-          </div>
+          <TasksSeparator currentTask={currentTask} setCurrentTask={setCurrentTask} sliders={sliders} />
         </div>
       )}
+
+      {!addUser.option && !create.option && sliders.option &&
+        <>
+          <h2 className={styles.tasksHeader}>{sliders.num == 0 ? 'TODO' : sliders.num == 1 ? 'PROCESS' : 'DONE'} {sliders.num == 0 ? currentTask?.todo?.length : sliders.num == 1 ? currentTask?.inProgress?.length : currentTask?.done?.length}</h2>
+          <div className={styles.sliders}>
+            <button onClick={() => onSlidersBtn(0)} className={styles.arrowBtn}>&#8810;</button>
+            <button onClick={() => onSlidersBtn(1)} className={styles.arrowBtn}>&#8811;</button>
+          </div>
+        </>
+      }
 
       {!addUser.option &&
         <Create
