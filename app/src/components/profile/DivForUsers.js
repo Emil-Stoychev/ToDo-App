@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./profile.module.css";
+import { useContext } from "react";
+import { OnlineUsersContext } from "../../context/onlineUsersContext";
 
 export const DivForUsers = ({ showUsers, setShowUsers, user }) => {
   const navigate = useNavigate();
+  const { onlineUsers } = useContext(OnlineUsersContext);
 
   const navigateToUserAcc = (userId) => {
     setShowUsers({ option: false, name: "", array: [] });
@@ -59,7 +62,8 @@ export const DivForUsers = ({ showUsers, setShowUsers, user }) => {
                     x.image ||
                     "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
                   }
-                  alt="user image"
+                  alt="profile picture here"
+                  className={onlineUsers?.find(y => y._id == x?._id) ? styles.profileImageOn : styles.profileImageOff}
                 />
                 <h2 onClick={() => navigateToUserAcc(x._id)}>
                   {x?.username || ''} {x._id == user?._id && "(you)"}

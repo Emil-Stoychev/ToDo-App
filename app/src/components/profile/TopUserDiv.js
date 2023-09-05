@@ -1,7 +1,8 @@
 import styles from "./profile.module.css";
 import { addOneImage, removeOneImage } from "../../utils/addRemoveImages";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { OnlineUsersContext } from "../../context/onlineUsersContext";
 
 export const TopUserDiv = ({
   user,
@@ -12,6 +13,7 @@ export const TopUserDiv = ({
 }) => {
   const uploadImage = useRef(null);
   const navigate = useNavigate()
+  const { onlineUsers } = useContext(OnlineUsersContext);
 
   return (
       dataUser?._id ? (
@@ -26,6 +28,7 @@ export const TopUserDiv = ({
                   : "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
               }
               alt="profileImage"
+              className={onlineUsers?.find(x => x._id == dataUser?._id) ? styles.profileImageOn : styles.profileImageOff}
             />
             {user?._id == dataUser?._id ? (
               <input

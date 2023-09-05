@@ -2,12 +2,16 @@ import { useNavigate } from 'react-router-dom'
 import styles from './navigation.module.css'
 import { useContext } from 'react'
 import { AuthContext } from '../../context/authContext'
+import { OnlineUsersContext } from '../../context/onlineUsersContext'
 
 export const Navigation = () => {
     const { user, setUser } = useContext(AuthContext)
+    const { setOnlineUsers, socket } = useContext(OnlineUsersContext)
     const navigate = useNavigate()
 
     const logout = () => {
+        socket.current?.disconnect()
+
         setUser(null)
         localStorage.removeItem('sessionStorage')
         navigate('/login')

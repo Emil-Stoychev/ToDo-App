@@ -3,6 +3,7 @@ import styles from './task.module.css'
 
 import { format } from "timeago.js";
 import { AuthContext } from '../../../../context/authContext';
+import { OnlineUsersContext } from '../../../../context/onlineUsersContext';
 
 export const TaskDiv = ({
   x,
@@ -16,6 +17,7 @@ export const TaskDiv = ({
   currentTask
 }) => {
   const { user, setUser } = useContext(AuthContext);
+  const { onlineUsers } = useContext(OnlineUsersContext)
 
   const onChangeHandler = (e) => {
     setEdit((state) => ({
@@ -68,7 +70,7 @@ export const TaskDiv = ({
         </div>
 
         <div className={styles.author}>
-          <img src={x?.in != "todo" ? x?.workOnIt?.image : x?.author.image} />
+          <img src={x?.in != "todo" ? x?.workOnIt?.image : x?.author.image} className={onlineUsers?.find(y => y._id == (x?.in != "todo" ? x?.workOnIt?._id : x?.author?._id)) ? styles.profileImageOn : styles.profileImageOff} />
 
           <div className={styles.taskBtns}>
             {edit.option ? (

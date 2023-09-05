@@ -6,6 +6,7 @@ import { format } from "timeago.js";
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../../context/authContext';
+import { OnlineUsersContext } from '../../../../context/onlineUsersContext';
 
 export const TaskInfo = ({ x, taskInfo, setTaskInfo }) => {
   const { user, setUser } = useContext(AuthContext);
@@ -15,6 +16,7 @@ export const TaskInfo = ({ x, taskInfo, setTaskInfo }) => {
         num: 0,
         empty: false,
       });
+  const {onlineUsers} = useContext(OnlineUsersContext)
   const navigate = useNavigate();
 
     useEffect(() => {
@@ -77,7 +79,7 @@ export const TaskInfo = ({ x, taskInfo, setTaskInfo }) => {
                   className={styles.infoAuthor}
                   onClick={() => navigate(`/profile/${x?.author?._id}`)}
                 >
-                  <img src={x?.author.image} />
+                  <img src={x?.author.image} className={onlineUsers?.find(y => y._id == x?.author?._id) ? styles.profileImageOn : styles.profileImageOff} />
                   <h2>
                     {x?.author?.username}{" "}
                     {x?.author?._id == user?._id && "(you)"}
@@ -94,7 +96,7 @@ export const TaskInfo = ({ x, taskInfo, setTaskInfo }) => {
                     className={styles.infoAuthor}
                     onClick={() => navigate(`/profile/${x?.workOnIt?._id}`)}
                   >
-                    <img src={x?.workOnIt?.image} />
+                    <img src={x?.workOnIt?.image} className={onlineUsers?.find(y => y._id == x?.workOnIt?._id) ? styles.profileImageOn : styles.profileImageOff} />
                     <h2>
                       {x?.workOnIt?.username}{" "}
                       {x?.workOnIt?._id == user?._id && "(you)"}
@@ -114,7 +116,7 @@ export const TaskInfo = ({ x, taskInfo, setTaskInfo }) => {
               {history?.cont?.map((y) => (
                 <div key={y?._id} className={styles.divHistory}>
                   <div className={styles.historyAuthor}>
-                    <img src={y?.user?.image} />
+                    <img src={y?.user?.image} className={onlineUsers?.find(u => u._id == y?.user?._id) ? styles.profileImageOn : styles.profileImageOff} />
                     <h2>
                       {y?.user?.username} {y?.user?._id == user?._id && "(you)"}
                     </h2>
