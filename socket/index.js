@@ -15,6 +15,15 @@ const getUser = (_id) => {
     return activeUsers.find((user) => user._id == _id)
 }
 
+const getUsers = (ids) => {
+    return activeUsers.map((user) => { 
+        if (user?._id != null && ids.includes(user?._id)) {
+            console.log('here user ' + user);
+            return user
+        } 
+    })
+}
+
 io.on('connection', (socket) => {
     socket.on("newUser", (_id) => {
         addNewUser(_id, socket.id)
@@ -32,6 +41,48 @@ io.on('connection', (socket) => {
     //         })
     //     }
     // })
+
+    socket.on("new-task", ({ userId, res, mainTaskId, mainTaskAuthor, users }) => {
+        if (userId != mainTaskAuthor) users.push(mainTaskAuthor)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("get-new-task", {
+                    res,
+                    mainTaskId,
+                    userId
+                })
+            })
+        }
+    })
+
+    socket.on("delete-main-task", ({ userId, mainTaskId, users }) => {
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-delete-main-task", {
+                    mainTaskId,
+                    userId
+                })
+            })
+        }
+    })
+
+    socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, res, users }) => {
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-add-or-remove-user-from-project", {
+                    mainTaskId,
+                    userId,
+                    res
+                })
+            })
+        }
+    })
 
     socket.on('send-message', (data) => {
         if (data != null) {

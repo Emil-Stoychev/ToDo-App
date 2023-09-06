@@ -6,7 +6,7 @@ import { OnlineUsersContext } from '../../context/onlineUsersContext'
 
 export const Navigation = () => {
     const { user, setUser } = useContext(AuthContext)
-    const { setOnlineUsers, socket } = useContext(OnlineUsersContext)
+    const { socket } = useContext(OnlineUsersContext)
     const navigate = useNavigate()
 
     const logout = () => {

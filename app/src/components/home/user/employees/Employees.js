@@ -11,7 +11,7 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
     const [users, setUsers] = useState([])
     const [defaultUsers, setDefaultUsers] = useState([])
     const navigate = useNavigate()
-    const {onlineUsers} = useContext(OnlineUsersContext)
+    const {onlineUsers, socket} = useContext(OnlineUsersContext)
 
     useEffect(() => {
         if (addUser.mode != 'non') {
@@ -53,6 +53,15 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                             ? state.employees.filter(x => x?._id != userId)
                             : [...state.employees, { _id: userId, email: res?.email, image: res?.image, username: res?.username }]
                     }))
+
+                    socket.current?.emit("add-or-remove-user-from-project", {
+                        userId,
+                        mainTaskId: currentTask?._id,
+                        res,
+                        users: currentTask?.employees?.map((x) => {
+                          if (onlineUsers.find((y) => y?._id == x?._id)) return x?._id;
+                        }),
+                      });
                 } else {
                     console.log(res);
                 }

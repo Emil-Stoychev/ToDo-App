@@ -1,6 +1,6 @@
 import styles from './App.module.css';
 import { Routes, Route } from 'react-router-dom'
-import { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useContext} from 'react';
 
 import { Navigation } from './core/navigation/Navigation';
 import { Footer } from './core/footer/Footer';
@@ -16,7 +16,7 @@ const LazyProfileComponent = lazy(() => import('./components/profile/Profile.js'
 const LazyFAQComponent = lazy(() => import('./components/faq/FAQ.js'))
 
 function App() {
-  const { user, setUser } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
 
   return (
     <div className={styles.app}>

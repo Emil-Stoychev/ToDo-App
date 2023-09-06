@@ -8,6 +8,7 @@ import { Create } from "./create/Create";
 import { Employees } from "./employees/Employees";
 import { SelectComponent } from "./select/SelectComponent";
 import { TasksSeparator } from "./TasksSeparator";
+import { OnlineUsersContext } from "../../../context/onlineUsersContext";
 
 const User = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -27,6 +28,8 @@ const User = () => {
     option: false,
     num: 0,
   });
+  const { socket } = useContext(OnlineUsersContext)
+
 
   useEffect(() => {
     taskService
@@ -105,6 +108,23 @@ const User = () => {
       }
     }
   }
+
+  socket.current?.on("after-delete-main-task", (data) => {
+    if (data != undefined && data?.mainTaskId == currentTask?._id && data?.userId != user?._id) {
+      setCurrentTask(undefined);
+      setTasks(state => state.filter(x => x._id != data?.mainTaskId))
+    }
+  });
+
+  socket.current?.on("after-add-or-remove-user-from-project", (data) => {
+    if (data != undefined && data?.userId != user?._id) {
+      if(tasks.find(x => x._id == data?.mainTaskId)) {
+        setTasks(state => state.filter(x => x._id != data?.mainTaskId))
+      } else {
+        setTasks(state => [...state, data?.res])
+      }
+    }
+  });
 
   return (
     <div className={styles.mainCont}>
