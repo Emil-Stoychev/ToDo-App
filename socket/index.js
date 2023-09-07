@@ -18,7 +18,6 @@ const getUser = (_id) => {
 const getUsers = (ids) => {
     return activeUsers.map((user) => { 
         if (user?._id != null && ids.includes(user?._id)) {
-            console.log('here user ' + user);
             return user
         } 
     })
@@ -70,7 +69,8 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, res, users }) => {
+    socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, perpetrator, res, currentTask, users }) => {
+        if (!users.find(x => x == userId)) users.push(userId)
         const allUsers = getUsers(users)
 
         if (allUsers?.length > 0) {
@@ -78,7 +78,26 @@ io.on('connection', (socket) => {
                 io.to(x?.socketId).emit("after-add-or-remove-user-from-project", {
                     mainTaskId,
                     userId,
-                    res
+                    res,
+                    perpetrator,
+                    currentTask
+                })
+            })
+        }
+    })
+
+    socket.on("add-or-remove-admin", ({ userId, mainTaskId, perpetrator, res, currentTask, users }) => {
+        if (!users.find(x => x == userId)) users.push(userId)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-add-or-remove-admin", {
+                    mainTaskId,
+                    userId,
+                    res,
+                    perpetrator,
+                    currentTask
                 })
             })
         }

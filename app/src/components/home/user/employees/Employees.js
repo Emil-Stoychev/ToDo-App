@@ -57,11 +57,13 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                     socket.current?.emit("add-or-remove-user-from-project", {
                         userId,
                         mainTaskId: currentTask?._id,
+                        perpetrator: user?._id,
                         res,
+                        currentTask,
                         users: currentTask?.employees?.map((x) => {
-                          if (onlineUsers.find((y) => y?._id == x?._id)) return x?._id;
+                            if (onlineUsers.find((y) => y?._id == x?._id)) return x?._id;
                         }),
-                      });
+                    });
                 } else {
                     console.log(res);
                 }
@@ -90,6 +92,17 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                         ...state,
                         admins: res.option == 'add' ? [...state.admins, { email: res.email, image: res.image, username: res.username, _id: res._id }] : state.admins.filter(x => x?._id != res?._id)
                     }))
+
+                    socket.current?.emit("add-or-remove-admin", {
+                        userId,
+                        mainTaskId: currentTask?._id,
+                        perpetrator: user?._id,
+                        res,
+                        currentTask,
+                        users: currentTask?.employees?.map((x) => {
+                            if (onlineUsers.find((y) => y?._id == x?._id)) return x?._id;
+                        }),
+                    });
                 } else {
                     console.log(res);
                 }

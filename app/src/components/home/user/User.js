@@ -28,6 +28,8 @@ const User = () => {
     option: false,
     num: 0,
   });
+  const [ receivedData, setReceivedData] = useState(undefined)
+  const [ changeAdmin, setChangeAdmin] = useState(undefined)
   const { socket } = useContext(OnlineUsersContext)
 
 
@@ -117,14 +119,45 @@ const User = () => {
   });
 
   socket.current?.on("after-add-or-remove-user-from-project", (data) => {
-    if (data != undefined && data?.userId != user?._id) {
-      if(tasks.find(x => x._id == data?.mainTaskId)) {
-        setTasks(state => state.filter(x => x._id != data?.mainTaskId))
+      if(data != undefined && data?.perpetrator != user?._id && receivedData?.mainTaskId != data?.mainTaskId) {
+        setReceivedData(data)
+      }
+  })
+
+  useEffect(() => {
+    if (receivedData != undefined) {
+      if(tasks.find(x => x._id == receivedData?.mainTaskId)) {
+        setTasks(state => state.filter(x => x._id != receivedData?.mainTaskId))
+        
+        if(currentTask?._id == receivedData?.mainTaskId) {
+          setCurrentTask(undefined)
+          setSelectedValue("disabledOption")
+        }
       } else {
-        setTasks(state => [...state, data?.res])
+        setTasks(state => [...state, receivedData?.currentTask])
       }
     }
-  });
+}, [receivedData])
+
+socket.current?.on("after-add-or-remove-admin", (data) => {
+  if(data != undefined && changeAdmin?.mainTaskId != data?.mainTaskId) {
+    setChangeAdmin(data)
+  }
+})
+
+useEffect(() => {
+    if (changeAdmin != undefined) {
+      if(changeAdmin?.mainTaskId == currentTask?._id) {
+          setCurrentTask(state => ({
+            ...state,
+          admins: changeAdmin?.res.option == 'add' ? [...state.admins, { email: changeAdmin?.res.email, image: changeAdmin?.res.image, username: changeAdmin?.res.username, _id: changeAdmin?.res._id }] : state.admins.filter(x => x?._id != changeAdmin?.res?._id)
+        }))
+      }
+    }
+
+    setChangeAdmin(undefined)
+}, [changeAdmin])
+
 
   return (
     <div className={styles.mainCont}>
