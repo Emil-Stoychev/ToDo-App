@@ -22,16 +22,15 @@ const User = () => {
   });
   const [addUser, setAddUser] = useState({
     option: false,
-    value: ''
-  })
+    value: "",
+  });
   const [sliders, setSliders] = useState({
     option: false,
     num: 0,
   });
-  const [ receivedData, setReceivedData] = useState(undefined)
-  const [ changeAdmin, setChangeAdmin] = useState(undefined)
-  const { socket } = useContext(OnlineUsersContext)
-
+  const [receivedData, setReceivedData] = useState(undefined);
+  const [changeAdmin, setChangeAdmin] = useState(undefined);
+  const { socket } = useContext(OnlineUsersContext);
 
   useEffect(() => {
     taskService
@@ -49,25 +48,25 @@ const User = () => {
   // console.log(sliders);
   useEffect(() => {
     if (window.innerWidth > 980) {
-      setSliders({ option: false, num: 0 })
+      setSliders({ option: false, num: 0 });
     } else {
-      setSliders(state => ({
+      setSliders((state) => ({
         ...state,
-        option: true
-      }))
+        option: true,
+      }));
     }
 
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       if (window.innerWidth > 980) {
-        setSliders({ option: false, num: 0 })
+        setSliders({ option: false, num: 0 });
       } else {
-        setSliders(state => ({
+        setSliders((state) => ({
           ...state,
-          option: true
-        }))
+          option: true,
+        }));
       }
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     if (currentTask?._id != undefined) {
@@ -86,102 +85,162 @@ const User = () => {
   const onSlidersBtn = (n) => {
     if (n == 0) {
       if (sliders.num == 0) {
-        setSliders(state => ({
+        setSliders((state) => ({
           ...state,
-          num: 2
-        }))
+          num: 2,
+        }));
       } else {
-        setSliders(state => ({
+        setSliders((state) => ({
           ...state,
-          num: state.num - 1
-        }))
+          num: state.num - 1,
+        }));
       }
     } else {
       if (sliders.num == 2) {
-        setSliders(state => ({
+        setSliders((state) => ({
           ...state,
-          num: 0
-        }))
+          num: 0,
+        }));
       } else {
-        setSliders(state => ({
+        setSliders((state) => ({
           ...state,
-          num: state.num + 1
-        }))
+          num: state.num + 1,
+        }));
       }
     }
-  }
+  };
 
   socket.current?.on("after-delete-main-task", (data) => {
-    if (data != undefined && data?.mainTaskId == currentTask?._id && data?.userId != user?._id) {
+    if (
+      data != undefined &&
+      data?.mainTaskId == currentTask?._id &&
+      data?.userId != user?._id
+    ) {
       setCurrentTask(undefined);
-      setTasks(state => state.filter(x => x._id != data?.mainTaskId))
+      setTasks((state) => state.filter((x) => x._id != data?.mainTaskId));
     }
   });
 
   socket.current?.on("after-add-or-remove-user-from-project", (data) => {
-      if(data != undefined && data?.perpetrator != user?._id && receivedData?.mainTaskId != data?.mainTaskId) {
-        setReceivedData(data)
-      }
-  })
+    if (
+      data != undefined &&
+      data?.perpetrator != user?._id &&
+      receivedData?.mainTaskId != data?.mainTaskId
+    ) {
+      setReceivedData(data);
+    }
+  });
 
   useEffect(() => {
     if (receivedData != undefined) {
-      if(tasks.find(x => x._id == receivedData?.mainTaskId)) {
-        setTasks(state => state.filter(x => x._id != receivedData?.mainTaskId))
-        
-        if(currentTask?._id == receivedData?.mainTaskId) {
-          setCurrentTask(undefined)
-          setSelectedValue("disabledOption")
+      if (receivedData?.userId == user?._id) {
+        if (tasks.find((x) => x._id == receivedData?.mainTaskId)) {
+          setTasks((state) =>
+            state.filter((x) => x._id != receivedData?.mainTaskId)
+          );
+
+          if (currentTask?._id == receivedData?.mainTaskId) {
+            setCurrentTask(undefined);
+            setSelectedValue("disabledOption");
+
+            if (addUser.option) {
+              setAddUser({
+                option: false,
+                value: "",
+              });
+            }
+          }
+        } else {
+          setTasks((state) => [...state, receivedData?.currentTask]);
         }
-      } else {
-        setTasks(state => [...state, receivedData?.currentTask])
       }
     }
-}, [receivedData])
+  }, [receivedData]);
 
-socket.current?.on("after-add-or-remove-admin", (data) => {
-  if(data != undefined && changeAdmin?.mainTaskId != data?.mainTaskId) {
-    setChangeAdmin(data)
-  }
-})
+  socket.current?.on("after-add-or-remove-admin", (data) => {
+    if (data != undefined && changeAdmin?.mainTaskId != data?.mainTaskId) {
+      setChangeAdmin(data);
+    }
+  });
 
-useEffect(() => {
+  useEffect(() => {
     if (changeAdmin != undefined) {
-      if(changeAdmin?.mainTaskId == currentTask?._id) {
-          setCurrentTask(state => ({
-            ...state,
-          admins: changeAdmin?.res.option == 'add' ? [...state.admins, { email: changeAdmin?.res.email, image: changeAdmin?.res.image, username: changeAdmin?.res.username, _id: changeAdmin?.res._id }] : state.admins.filter(x => x?._id != changeAdmin?.res?._id)
-        }))
+      if (changeAdmin?.mainTaskId == currentTask?._id) {
+        setCurrentTask((state) => ({
+          ...state,
+          admins:
+            changeAdmin?.res.option == "add"
+              ? [
+                  ...state.admins,
+                  {
+                    email: changeAdmin?.res.email,
+                    image: changeAdmin?.res.image,
+                    username: changeAdmin?.res.username,
+                    _id: changeAdmin?.res._id,
+                  },
+                ]
+              : state.admins.filter((x) => x?._id != changeAdmin?.res?._id),
+        }));
       }
     }
 
-    setChangeAdmin(undefined)
-}, [changeAdmin])
-
+    setChangeAdmin(undefined);
+  }, [changeAdmin]);
 
   return (
     <div className={styles.mainCont}>
-      {!addUser.option && !create.option && <SelectComponent tasks={tasks} selectedValue={selectedValue} setSelectedValue={setSelectedValue} setCurrentTask={setCurrentTask} />}
+      {!addUser.option && !create.option && (
+        <SelectComponent
+          tasks={tasks}
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+          setCurrentTask={setCurrentTask}
+        />
+      )}
 
-      {!create.option && <Employees user={user} addUser={addUser} setAddUser={setAddUser} setCurrentTask={setCurrentTask} currentTask={currentTask} setCreate={setCreate} />}
+      {!create.option && (
+        <Employees
+          user={user}
+          addUser={addUser}
+          setAddUser={setAddUser}
+          setCurrentTask={setCurrentTask}
+          currentTask={currentTask}
+          setCreate={setCreate}
+        />
+      )}
 
       {!addUser.option && !create.option && (
         <div className={styles.container}>
-          <TasksSeparator currentTask={currentTask} setCurrentTask={setCurrentTask} sliders={sliders} />
+          <TasksSeparator
+            currentTask={currentTask}
+            setCurrentTask={setCurrentTask}
+            sliders={sliders}
+          />
         </div>
       )}
 
-      {!addUser.option && !create.option && sliders.option &&
+      {!addUser.option && !create.option && sliders.option && (
         <>
-          <h2 className={styles.tasksHeader}>{sliders.num == 0 ? 'TODO' : sliders.num == 1 ? 'PROCESS' : 'DONE'} {sliders.num == 0 ? currentTask?.todo?.length : sliders.num == 1 ? currentTask?.inProgress?.length : currentTask?.done?.length}</h2>
+          <h2 className={styles.tasksHeader}>
+            {sliders.num == 0 ? "TODO" : sliders.num == 1 ? "PROCESS" : "DONE"}{" "}
+            {sliders.num == 0
+              ? currentTask?.todo?.length
+              : sliders.num == 1
+              ? currentTask?.inProgress?.length
+              : currentTask?.done?.length}
+          </h2>
           <div className={styles.sliders}>
-            <button onClick={() => onSlidersBtn(0)} className={styles.arrowBtn}>&#8810;</button>
-            <button onClick={() => onSlidersBtn(1)} className={styles.arrowBtn}>&#8811;</button>
+            <button onClick={() => onSlidersBtn(0)} className={styles.arrowBtn}>
+              &#8810;
+            </button>
+            <button onClick={() => onSlidersBtn(1)} className={styles.arrowBtn}>
+              &#8811;
+            </button>
           </div>
         </>
-      }
+      )}
 
-      {!addUser.option &&
+      {!addUser.option && (
         <Create
           tasks={tasks}
           create={create}
@@ -190,7 +249,8 @@ useEffect(() => {
           setCurrentTask={setCurrentTask}
           currentTask={currentTask}
           user={user}
-        />}
+        />
+      )}
     </div>
   );
 };

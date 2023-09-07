@@ -48,8 +48,8 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                 if (!res.message) {
                     setCurrentTask(state => ({
                         ...state,
-                        admins: res.option == true ? state.admins.filter(x => x?._id != userId) : state.admins,
-                        employees: res.option == true
+                        admins: res.option ? state.admins.filter(x => x?._id != userId) : state.admins,
+                        employees: res.option
                             ? state.employees.filter(x => x?._id != userId)
                             : [...state.employees, { _id: userId, email: res?.email, image: res?.image, username: res?.username }]
                     }))

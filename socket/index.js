@@ -69,6 +69,69 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on("delete-task", ({ mainTaskAuthor, mainTaskId, perpetrator, taskId, users }) => {
+        if(perpetrator != mainTaskAuthor) users.push(mainTaskAuthor)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-delete-task", {
+                    mainTaskId,
+                    perpetrator,
+                    taskId
+                })
+            })
+        }
+    })
+
+    socket.on("change-task-priority", ({ taskIn, priority, mainTaskAuthor, mainTaskId, perpetrator, taskId, users }) => {
+        if(perpetrator != mainTaskAuthor) users.push(mainTaskAuthor)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-change-task-priority", {
+                    mainTaskId,
+                    perpetrator,
+                    taskId,
+                    taskIn,
+                    priority
+                })
+            })
+        }
+    })
+
+    socket.on("change-task-value", ({ value, mainTaskAuthor, mainTaskId, perpetrator, taskId, users }) => {
+        if(perpetrator != mainTaskAuthor) users.push(mainTaskAuthor)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-change-task-value", {
+                    mainTaskId,
+                    perpetrator,
+                    taskId,
+                    value
+                })
+            })
+        }
+    })
+
+    socket.on("move-task", ({ mainTaskAuthor, mainTaskId, perpetrator, replacedTask, users }) => {
+        if(perpetrator != mainTaskAuthor) users.push(mainTaskAuthor)
+        const allUsers = getUsers(users)
+
+        if (allUsers?.length > 0) {
+            allUsers.forEach(x => {
+                io.to(x?.socketId).emit("after-move-task", {
+                    mainTaskId,
+                    perpetrator,
+                    replacedTask
+                })
+            })
+        }
+    })
+
     socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, perpetrator, res, currentTask, users }) => {
         if (!users.find(x => x == userId)) users.push(userId)
         const allUsers = getUsers(users)
