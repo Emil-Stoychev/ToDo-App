@@ -132,8 +132,9 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, perpetrator, res, currentTask, users }) => {
+    socket.on("add-or-remove-user-from-project", ({ userId, mainTaskId, perpetrator, mainTaskAuthor, res, currentTask, users }) => {
         if (!users.find(x => x == userId)) users.push(userId)
+        if (mainTaskAuthor) users.push(mainTaskAuthor)
         const allUsers = getUsers(users)
 
         if (allUsers?.length > 0) {

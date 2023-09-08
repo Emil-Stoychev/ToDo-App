@@ -12,6 +12,8 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
     const [defaultUsers, setDefaultUsers] = useState([])
     const navigate = useNavigate()
     const {onlineUsers, socket} = useContext(OnlineUsersContext)
+    const [addOrRemoveUser, setAddOrRemoveUser] = useState(undefined);
+
 
     useEffect(() => {
         if (addUser.mode != 'non') {
@@ -54,10 +56,16 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
                             : [...state.employees, { _id: userId, email: res?.email, image: res?.image, username: res?.username }]
                     }))
 
+                    if(res.option && addUser.value.trim() == '') {
+                        setUsers(state => state.filter(x => x._id != userId))
+                        setDefaultUsers(state => state.filter(x => x._id != userId))
+                    }
+
                     socket.current?.emit("add-or-remove-user-from-project", {
                         userId,
                         mainTaskId: currentTask?._id,
                         perpetrator: user?._id,
+                        mainTaskAuthor: currentTask?.author?._id != user?._id && currentTask?.author?._id,
                         res,
                         currentTask,
                         users: currentTask?.employees?.map((x) => {
@@ -109,6 +117,34 @@ export const Employees = ({ user, addUser, setAddUser, setCurrentTask, currentTa
             })
     }
 
+    socket.current?.on("after-add-or-remove-user-from-project", (data) => {
+        if (
+          data != undefined &&
+          currentTask?._id == data?.mainTaskId
+        ) {
+            setAddOrRemoveUser(data);
+        }
+      });
+
+      useEffect(() => {
+        if(addUser.option && addUser?.value.trim() == '') {
+            setUsers(state => state.filter(x => x._id != addOrRemoveUser?.userId))
+            setDefaultUsers(state => state.filter(x => x._id != addOrRemoveUser?.userId))
+        } else {
+            setDefaultUsers(state => [...state, addOrRemoveUser?.res])
+        }
+
+        if(addOrRemoveUser != undefined && currentTask?._id == addOrRemoveUser?.mainTaskId) {
+            setCurrentTask(state => ({
+                ...state,
+                admins: addOrRemoveUser?.res.option ? state.admins.filter(x => x?._id != addOrRemoveUser?.userId) : state.admins,
+                employees: addOrRemoveUser?.res.option
+                ? state.employees.filter(x => x?._id != addOrRemoveUser?.userId)
+                : [...state.employees, { _id: addOrRemoveUser?.userId, email: addOrRemoveUser?.res?.email, image: addOrRemoveUser?.res?.image, username: addOrRemoveUser?.res?.username }]
+            }))
+        }
+      }, [addOrRemoveUser])
+      
     return (
         <>
             {addUser.option
